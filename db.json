@@ -1,0 +1,13 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }, {
+      "id": 2,
+      "title": "json-server2",
+      "author": "typicode2"
+    }
+  ]
+}
