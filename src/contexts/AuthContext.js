@@ -11,7 +11,9 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
   const [loading, setLoading] = useState(true)
 
-  function signup(email, password) {
+  function signup(email, password, name) {
+   // TODO:
+   // add name to MONGODB
     return auth.createUserWithEmailAndPassword(email, password)
   }
 
