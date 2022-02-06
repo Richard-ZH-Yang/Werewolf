@@ -22,7 +22,6 @@ function App() {
           <AuthProvider>
             <Routes>
               <Route exact path='/' element={<SearchRoom />} />
-
               <Route path='/signup' element={<Signup />} />
               <Route path='/login' element={<Login />} />
             </Routes>
