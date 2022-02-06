@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import SearchRoom from './SearchRoom'
 import Login from './Login'
 import Error from './Error'
-import PrivateRoute from './PrivateRoute'
+import PrivateWrapper from './PrivateWrapper'
 
 
 
@@ -22,7 +22,10 @@ function App() {
         <Router>
           <AuthProvider>
             <Routes>
-              <Route exact path='/' element={<SearchRoom />} />
+              {/* <PrivateRoute exact path='/' element={<SearchRoom />} /> */}
+              <Route element={<PrivateWrapper />}>
+                <Route exact path='/' element={<SearchRoom />} />
+              </Route>
               <Route path='/signup' element={<Signup />} />
               <Route path='/login' element={<Login />} />
               <Route path='*' element={<Error />} />
