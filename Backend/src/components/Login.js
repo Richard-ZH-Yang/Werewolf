@@ -18,9 +18,8 @@ export default function Login() {
       setError('')
       setLoading(true)
       await login(emailRef.current.value, passwordRef.current.value)
-      navigate('/', { replace: true })
-    } catch (e){
-      console.log(e)
+      navigate.push('/')
+    } catch {
       setError('Failed to log in')
     }
 

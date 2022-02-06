@@ -4,21 +4,10 @@
       "id": 1,
       "title": "json-server",
       "author": "typicode"
-    },
-    {
+    }, {
       "id": 2,
       "title": "json-server2",
       "author": "typicode2"
-    }
-  ],
-  "auth": [
-    {
-      "email": "1@gamil.com",
-      "password": "123"
-    },
-    {
-      "email": "2@gamil.com",
-      "password": "123"
     }
   ]
 }

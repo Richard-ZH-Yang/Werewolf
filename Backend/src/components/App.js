@@ -6,8 +6,7 @@ import { AuthProvider } from '../contexts/AuthContext'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import SearchRoom from './SearchRoom'
 import Login from './Login'
-import Error from './Error'
-import PrivateWrapper from './PrivateWrapper'
+import PrivateRoute from './PrivateRoute'
 
 
 
@@ -22,13 +21,10 @@ function App() {
         <Router>
           <AuthProvider>
             <Routes>
-              {/* <PrivateRoute exact path='/' element={<SearchRoom />} /> */}
-              <Route element={<PrivateWrapper />}>
-                <Route exact path='/' element={<SearchRoom />} />
-              </Route>
+              <Route exact path='/' element={<SearchRoom />} />
+
               <Route path='/signup' element={<Signup />} />
               <Route path='/login' element={<Login />} />
-              <Route path='*' element={<Error />} />
             </Routes>
           </AuthProvider>
         </Router>
