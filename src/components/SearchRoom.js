@@ -29,7 +29,7 @@ export default function SearchRoom() {
           <strong>Email:</strong> {currentUser.email}
         </Card.Body>
       </Card>
-      <Button className='btn text-center w-100 mt-2' onClick={() => handleLogout}>Log out</Button>
+      <Button className='btn text-center w-100 mt-2' onClick={handleLogout}>Log out</Button>
     </>
   )
 }
