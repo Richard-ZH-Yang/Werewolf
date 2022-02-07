@@ -15,6 +15,11 @@ export function AuthProvider({ children }) {
    // TODO:
    // add name to MONGODB
     return auth.createUserWithEmailAndPassword(email, password)
+    .then((result) => {
+      return result.user.updateProfile({
+        displayName: name
+      })
+    })
   }
 
   function login(email, password) {

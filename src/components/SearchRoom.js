@@ -18,7 +18,7 @@ export default function SearchRoom() {
         setError('Failed to log out')
       }
     }
-
+    console.log(currentUser)
 
   return (
     <>
