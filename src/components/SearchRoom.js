@@ -6,7 +6,18 @@ import { Link, useNavigate } from 'react-router-dom'
 export default function SearchRoom() {
   const [error, setError] = useState('')
   const { currentUser, logout } = useAuth()
-  const history = useNavigate()
+  const navigate = useNavigate()
+
+  async function handleLogout() {
+    setError('')
+
+    try {
+        await logout()
+        navigate('/login', { replace: true })
+      } catch {
+        setError('Failed to log out')
+      }
+    }
 
 
   return (
@@ -16,10 +27,9 @@ export default function SearchRoom() {
           <h2 className='text-center mb-4'>Search Room</h2>
           {error && <Alert variant='danger'>{error}</Alert>}
           <strong>Email:</strong> {currentUser.email}
-         
         </Card.Body>
       </Card>
-
+      <Button className='btn text-center w-100 mt-2' onClick={() => handleLogout}>Log out</Button>
     </>
   )
 }
