@@ -2,6 +2,7 @@
   "rooms": [
     {
       "id": 1,
+      "maxNumPlayer": 4,
       "players":[
         {
           "id": "1@gmail.com",
@@ -25,6 +26,7 @@
     },
     {
       "id": 2,
+      "maxNumPlayer": 7,
       "players": [
         {
           "id": "1@gmail.com",

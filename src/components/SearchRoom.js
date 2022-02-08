@@ -8,6 +8,7 @@ export default function SearchRoom() {
   const { currentUser, logout } = useAuth()
   const navigate = useNavigate()
 
+
   async function handleLogout() {
     setError('')
 
@@ -29,6 +30,7 @@ export default function SearchRoom() {
           <strong>Email:</strong> {currentUser.email}
         </Card.Body>
       </Card>
+
       <Button className='btn text-center w-100 mt-2' onClick={handleLogout}>Log out</Button>
     </>
   )
