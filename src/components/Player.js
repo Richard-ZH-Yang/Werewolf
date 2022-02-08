@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Button, Alert } from 'react-bootstrap'
+import PropTypes from 'prop-types'
 
 const Player = ({name}) => {
   return <>
@@ -10,5 +11,13 @@ const Player = ({name}) => {
    </Card>
   </>;
 };
+
+Player.propTypes = {
+ name: PropTypes.string.isRequired,
+}
+
+Player.defaultProps = {
+ name: 'no name'
+}
 
 export default Player;
