@@ -8,7 +8,8 @@ import SearchRoom from './SearchRoom'
 import Login from './Login'
 import Error from './Error'
 import PrivateWrapper from './PrivateWrapper'
-
+import MainRoom from './MainRoom'
+import backgroundImage from '../data/images/background.jpeg'
 
 
 
@@ -16,7 +17,14 @@ function App() {
   return (
     <Container
       className='d-flex align-items-center justify-content-center'
-      style={{ minHeight: '100vh' }}
+      style={{
+        minHeight: '100vh',
+        // backgroundImage: `url(${backgroundImage})`,
+        // backgroundPosition: 'center center',
+        // backgroundSize: 'cover',
+        // backgroundRepeat: 'no-repeat',
+        // backgroundAttachment: 'fixed'
+      }}
     >
       <div className='w-100' style={{ maxWidth: '400px' }}>
         <Router>
@@ -25,6 +33,7 @@ function App() {
               {/* <PrivateRoute exact path='/' element={<SearchRoom />} /> */}
               <Route element={<PrivateWrapper />}>
                 <Route exact path='/' element={<SearchRoom />} />
+                <Route path='/mainRoom' element={<MainRoom />} />
               </Route>
               <Route path='/signup' element={<Signup />} />
               <Route path='/login' element={<Login />} />

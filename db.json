@@ -1,14 +1,64 @@
 {
-  "tasks": [
+  "rooms": [
     {
       "id": 1,
-      "title": "json-server",
-      "author": "typicode"
+      "maxNumPlayer": 4,
+      "players":[
+        {
+          "id": "1@gmail.com",
+          "identity": "PROPHET",
+          "name": "Richard",
+          "seat": 1
+        },
+        {
+          "id": "2@gmail.com",
+          "identity": "WOLF",
+          "name": "Ding",
+          "seat": 2
+        },
+        {
+          "id": "3@gmail.com",
+          "identity": "JUDGE",
+          "name": "Lavender",
+          "seat": 3
+        }
+      ]
     },
     {
       "id": 2,
-      "title": "json-server2",
-      "author": "typicode2"
+      "maxNumPlayer": 7,
+      "players": [
+        {
+          "id": "1@gmail.com",
+          "identity": "PROPHET",
+          "name": "Richard",
+          "seat": 1
+        },
+        {
+          "id": "2@gmail.com",
+          "identity": "WOLF",
+          "name": "Ding",
+          "seat": 2
+        },
+        {
+          "id": "3@gmail.com",
+          "identity": "JUDGE",
+          "name": "Lavender",
+          "seat": 3
+        },
+        {
+          "id": "4@gmail.com",
+          "identity": "CIVILIAN",
+          "name": "WYC",
+          "seat": 4
+        },
+        {
+          "id": "5@gmail.com",
+          "identity": "WITCH",
+          "name": "YZH",
+          "seat": 5
+        }
+      ]
     }
   ],
   "auth": [
