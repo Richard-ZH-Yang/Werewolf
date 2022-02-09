@@ -8,7 +8,7 @@ import Player from './Player'
 export default function MainRoom() {
   const { loading, seating, room } = useFetch('http://localhost:4567/rooms/1/')
   const [error, setError] = useState('')
-  const [currentSeat, setCurrentSeat] = useState('')
+  const [currentSeat, setCurrentSeat] = useState(0)
   const { currentUser, logout } = useAuth()
   const navigate = useNavigate()
 
@@ -29,8 +29,7 @@ export default function MainRoom() {
       {/* <CardDeck style={{ display: 'flex', flexDirection: 'row' }}> */}
       <Container
         className='h-100'
-        
-      >
+        >
         <Row className='h-100 w-100 align-items-center'>
             {loading ? (
               <Col md={20} className='treeViewComponent h-100'>
@@ -39,7 +38,7 @@ export default function MainRoom() {
               
             ) : (
               seating.map((player, index) => {
-                return <Player key={player.id} {...player} seatNumber={index} />
+                return <Player key={player.id} {...player} seatNumber={index + 1} loading = {loading} currentSeat = {currentSeat} seating = {seating}/>
               })
             )}
         </Row>

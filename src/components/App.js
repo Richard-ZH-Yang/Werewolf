@@ -26,7 +26,7 @@ function App() {
         // backgroundAttachment: 'fixed'
       }}
     >
-      <div className='w-100' style={{ maxWidth: '400px' }}>
+      <div className='w-100'>
         <Router>
           <AuthProvider>
             <Routes>
