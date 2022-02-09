@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Card, Button, Alert, CardGroup } from 'react-bootstrap'
+import { Card, Button, Alert, Row, Col, Container } from 'react-bootstrap'
+import { CardDeck } from 'reactstrap'
 import { useAuth, logout } from '../contexts/AuthContext'
 import { useFetch } from './useFetch'
 import Player from './Player'
@@ -8,6 +9,7 @@ import Player from './Player'
 export default function MainRoom() {
   const { loading, seating, room } = useFetch('http://localhost:4567/rooms/1/')
   const [error, setError] = useState('')
+  const [currentSeat, setCurrentSeat] = useState('')
   const { currentUser, logout } = useAuth()
   const navigate = useNavigate()
 
@@ -25,16 +27,15 @@ export default function MainRoom() {
 
   return (
     <>
-      <CardGroup>
+      <CardDeck style={{ display: 'flex', flexDirection: 'row' }}>
         {loading ? (
           <h1>loading ...</h1>
         ) : (
           seating.map((player, index) => {
-            return <Player key={player.id} {...player} seatNumber = {index} />
+            return <Player key={player.id} {...player} seatNumber={index} />
           })
         )}
-        
-      </CardGroup>
+      </CardDeck>
 
       <Button className='btn text-center w-100 mt-2' onClick={handleLogout}>
         Log out

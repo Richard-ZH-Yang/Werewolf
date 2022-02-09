@@ -5,10 +5,14 @@ import PropTypes from 'prop-types'
 export default function Player({ name, seatNumber }) {
   return (
     <>
-      <Card>
-        <Card.Body>
-          <h3>{seatNumber + 1}</h3>
+      <Card border='primary' style={{ width: '18 rem', flex: 1 }}>
+        <Card.Body className='d-flex flex-column mb-2'>
+          <Card.Title as='h2'>{seatNumber + 1}</Card.Title>
+
           <h4>{name}</h4>
+          <Button className='btn mt-auto' variant='info'>
+            Go somewhere
+          </Button>
         </Card.Body>
       </Card>
     </>
