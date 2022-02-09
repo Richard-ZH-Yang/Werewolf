@@ -6,7 +6,7 @@ import { useFetch } from './useFetch'
 import Player from './Player'
 
 export default function MainRoom() {
-  const { loading, room } = useFetch('http://localhost:4567/rooms/1/')
+  const { loading, seating, room } = useFetch('http://localhost:4567/rooms/1/')
   const [error, setError] = useState('')
   const { currentUser, logout } = useAuth()
   const navigate = useNavigate()
@@ -23,18 +23,17 @@ export default function MainRoom() {
     }
   }
 
-
-
   return (
     <>
       <CardGroup>
         {loading ? (
           <h1>loading ...</h1>
         ) : (
-          room.players.map((player, index) => {
+          seating.map((player, index) => {
             return <Player key={player.id} {...player} seatNumber = {index} />
           })
         )}
+        
       </CardGroup>
 
       <Button className='btn text-center w-100 mt-2' onClick={handleLogout}>

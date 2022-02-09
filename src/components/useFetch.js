@@ -19,24 +19,31 @@ export const useFetch = (url) => {
   return { loading, room, seating }
 }
 
-function getName(room, target) {
+function getPlayerInfo(room, target) {
     let name = ''
+    let id = ''
     room.players.forEach((player) => {
       if (player.seat === target) {
         name = player.name
+        id = player.id
       }
     })
-    return name
+    return {name, id}
 }
 
-  function getSeating(room){
+ function getSeating(room){
     let seatingPlan = []
     const currentSeats = []
     room.players.forEach((player)=> {
       currentSeats.push(player.seat)
     })
+
     for (let i = 1; i <= room.maxNumPlayer; i++ ) {
+      let player = {}
+      player = getPlayerInfo(room, i)
       seatingPlan.push({seatNumber: i, 
-      name: getName(room, i) })
+      name: player.name,
+      id: player.id })
     }
+    return seatingPlan
   }
