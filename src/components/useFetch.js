@@ -2,17 +2,17 @@ import { useState, useEffect, useCallback } from 'react'
 
 export const useFetch = (url) => {
   const [loading, setLoading] = useState(true)
-  const [players, setPlayers] = useState([])
+  const [room, setRoom] = useState([])
 
-  const getPlayers = useCallback(async () => {
+  const getRoom = useCallback(async () => {
     const response = await fetch(url)
-    const players = await response.json()
-    setPlayers(players)
+    const room = await response.json()
+    setRoom(room)
     setLoading(false)
   }, [url])
 
   useEffect(() => {
-    getPlayers()
-  }, [url, getPlayers])
-  return { loading, players }
+    getRoom()
+  }, [url, getRoom])
+  return { loading, room }
 }
