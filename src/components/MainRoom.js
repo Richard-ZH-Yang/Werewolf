@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Card, Button, Alert, Row, Col, Container } from 'react-bootstrap'
 import { useAuth, logout } from '../contexts/AuthContext'
 import { useFetch } from './useFetch'
 import Player from './Player'
 
 export default function MainRoom() {
-  const { loading, seating, room } = useFetch('http://localhost:4567/rooms/1/')
+  const { id } = useParams()
+  const { loading, seating, room } = useFetch(`http://localhost:4567/rooms/${id}`)
   const [error, setError] = useState('')
   const [currentSeat, setCurrentSeat] = useState(0)
   const { currentUser, logout } = useAuth()
