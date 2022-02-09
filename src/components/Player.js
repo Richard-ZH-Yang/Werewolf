@@ -1,20 +1,25 @@
 import React from 'react'
-import { Card, Button, Alert } from 'react-bootstrap'
+import { Card, Button, Alert, Col } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
 export default function Player({ name, seatNumber }) {
   return (
     <>
-      <Card border='primary' style={{ width: '18 rem', flex: 1 }}>
-        <Card.Body className='d-flex flex-column mb-2'>
-          <Card.Title as='h2'>{seatNumber + 1}</Card.Title>
+      <Col
+        md={6}
+        className='container-fluid mt-4 treeViewComponent h-100'
+      >
+        <Card border='primary' style={{ width: '18 rem', flex: 1 }}>
+          <Card.Body className='d-flex flex-column mb-2'>
+            <Card.Title as='h2'>{seatNumber + 1}</Card.Title>
 
-          <h4>{name}</h4>
-          <Button className='btn mt-auto' variant='info'>
-            Go somewhere
-          </Button>
-        </Card.Body>
-      </Card>
+            <h4>{name}</h4>
+            <Button className='btn mt-auto' variant='info'>
+              Sit
+            </Button>
+          </Card.Body>
+        </Card>
+      </Col>
     </>
   )
 }
