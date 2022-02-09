@@ -10,36 +10,35 @@ export default function SearchRoom() {
   const { currentUser, logout } = useAuth()
   const navigate = useNavigate()
 
+  const displayError = (message) => {
+    setError(message)
+    setTimeout(() => {
+      setError('')
+    }, 2000)
+  }
+
   // send a get request, if rejected with 404 status, show an error message. Otherwise direct to the main room page with the correct url
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
       const response = await fetch(`http://localhost:4567/rooms/${roomNumber}`)
       if (response.status === 404) {
-        setError('cannot find that room')
-        setTimeout(()=> {
-          setError('')
-        }, 2000)
+        displayError('ERROR: Cannot find that room')
+      } else {
+        // success
+        navigate(`/mainroom/${roomNumber}`, { replace: true })
       }
-      console.log(response.status)
-      const room = await response.json()
-      console.log(room)
     } catch (e) {
-      console.log(e)
-      console.log('ERROR')
+      displayError("ERROR! Please try again")
     }
-
-    // TODO: communicate with the backend, send a get request, if rejected, show an error message, otherwise direct to the main room page with the correct url
   }
 
   async function handleLogout() {
-    setError('')
-
     try {
       await logout()
       navigate('/login', { replace: true })
     } catch {
-      setError('Failed to log out')
+      displayError('Failed to log out')
     }
   }
 
@@ -63,7 +62,10 @@ export default function SearchRoom() {
             You could enter an existing room or create a new one
           </Form.Text>
         </Form.Group>
-        <Button className='btn text-center w-100 mt-2' type='submit'>
+        <Button
+          className='btn text-center w-100 mt-2'
+          type='submit'
+        >
           Submit
         </Button>
       </Form>

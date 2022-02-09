@@ -33,7 +33,7 @@ function App() {
               {/* <PrivateRoute exact path='/' element={<SearchRoom />} /> */}
               <Route element={<PrivateWrapper />}>
                 <Route exact path='/' element={<SearchRoom />} />
-                <Route path='/mainRoom' element={<MainRoom />} />
+                <Route path='/mainroom/:id' element={<MainRoom />} />
               </Route>
               <Route path='/signup' element={<Signup />} />
               <Route path='/login' element={<Login />} />
