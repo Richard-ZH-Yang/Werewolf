@@ -24,7 +24,6 @@ export default function Signup() {
       setError('')
       setLoading(true)
       await signup(emailRef.current.value, passwordRef.current.value, nameRef.current.value)
-      // navigate.push('/')
       navigate('/', { replace: true })
 
     } catch (e) {

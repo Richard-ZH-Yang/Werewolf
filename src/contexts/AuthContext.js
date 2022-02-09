@@ -12,8 +12,11 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   function signup(email, password, name) {
-   // TODO:
-   // add name to MONGODB
+    if (name === '') {
+      return new Promise((resolve, reject)=> {
+        reject("Name cannot be empty")
+      })
+    }
     return auth.createUserWithEmailAndPassword(email, password)
     .then((result) => {
       return result.user.updateProfile({

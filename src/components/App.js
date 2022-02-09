@@ -26,14 +26,14 @@ function App() {
         // backgroundAttachment: 'fixed'
       }}
     >
-      <div className='w-100' style={{ maxWidth: '400px' }}>
+      <div className='w-100' style={{ maxWidth: '800px' }}>
         <Router>
           <AuthProvider>
             <Routes>
               {/* <PrivateRoute exact path='/' element={<SearchRoom />} /> */}
               <Route element={<PrivateWrapper />}>
                 <Route exact path='/' element={<SearchRoom />} />
-                <Route path='/mainRoom' element={<MainRoom />} />
+                <Route path='/mainroom/:id' element={<MainRoom />} />
               </Route>
               <Route path='/signup' element={<Signup />} />
               <Route path='/login' element={<Login />} />
