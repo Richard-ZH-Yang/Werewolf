@@ -12,7 +12,6 @@ export default function MainRoom() {
   const navigate = useNavigate()
 
 
-
   async function handleLogout() {
     setError('')
 
@@ -32,8 +31,8 @@ export default function MainRoom() {
         {loading ? (
           <h1>loading ...</h1>
         ) : (
-          room.players.map((player) => {
-            return <Player key={player.id} {...player} />
+          room.players.map((player, index) => {
+            return <Player key={player.id} {...player} seatNumber = {index} />
           })
         )}
       </CardGroup>
