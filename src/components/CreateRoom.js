@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { Form, Button, Card, Alert } from 'react-bootstrap'
+import { useAuth } from '../contexts/AuthContext'
 
 const CreateRoom = () => {
   const wolfRef = useRef()
@@ -9,10 +10,25 @@ const CreateRoom = () => {
   const hunterRef = useRef()
   const idiotRef = useRef()
   const guardianRef = useRef()
+    const { currentUser } = useAuth()
+
 
   function handleSubmit(e) {
     e.preventDefault()
-    const newRoom = {}
+    const newRoom = {
+      judgeId: currentUser.email,
+      wolf: parseInt(wolfRef.current.value),
+      civilian: parseInt(civilianRef.current.value),
+      prophet: prophetRef.current.checked ? 1 : 0,
+      witch: witchRef.current.checked ? 1 : 0,
+      hunter: hunterRef.current.checked ? 1 : 0,
+      idiot: idiotRef.current.checked ? 1 : 0,
+      guardian: guardianRef.current.checked ? 1 : 0
+    }
+    // TODO: send post request to backend
+    // if success, create and direct to new room with current user as a judge
+    // Otherwise, show an error message
+    console.log(newRoom)
   }
 
   return (
