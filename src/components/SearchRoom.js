@@ -3,6 +3,7 @@ import { Card, Button, Alert, Form } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
 import { useFetch } from './useFetch'
+import CreateRoom from './CreateRoom'
 
 export default function SearchRoom() {
   const [error, setError] = useState('')
@@ -84,6 +85,7 @@ export default function SearchRoom() {
       >
         {showCreateRoom ? 'Close' : 'Create new room'}
       </Button>
+      {showCreateRoom && <CreateRoom />}
     </>
   )
 }
