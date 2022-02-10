@@ -12,17 +12,20 @@ const CreateRoom = () => {
 
   function handleSubmit(e) {
     e.preventDefault()
-    console.log(wolfRef.current.value)
-    console.log(prophetRef.current.checked)
-    console.log(hunterRef.current.checked)
-
+    const newRoom = {}
   }
 
   return (
     <Form onSubmit={handleSubmit} className='mt-3'>
       <Form.Group className='mb-3'>
         <Form.Label>Number of Wolf:</Form.Label>
-        <Form.Control type='number' defaultValue={3} ref={wolfRef} required />
+        <Form.Control
+          type='number'
+          defaultValue={3}
+          ref={wolfRef}
+          min='1'
+          required
+        />
       </Form.Group>
       <Form.Group className='mb-3'>
         <Form.Label>Number of Civilians:</Form.Label>
@@ -30,9 +33,10 @@ const CreateRoom = () => {
           type='number'
           defaultValue={3}
           ref={civilianRef}
+          min='1'
           required
         />
-      </Form.Group>{' '}
+      </Form.Group>
       <Form.Group className='mb-3'>
         <Form.Label>Select the gods:</Form.Label>
         <Form.Check
