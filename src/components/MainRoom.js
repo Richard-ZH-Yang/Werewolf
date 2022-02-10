@@ -7,7 +7,6 @@ import { useAuth, logout } from '../contexts/AuthContext'
 import uuid from 'react-uuid'
 import PropTypes from 'prop-types'
 
-
 export default function MainRoom() {
   const { id } = useParams()
   const url = `http://localhost:4567/rooms/${id}`
@@ -29,6 +28,13 @@ export default function MainRoom() {
     setLoading(false)
   }, [url])
 
+  const displayError = (message) => {
+    setError(message)
+    setTimeout(() => {
+      setError('')
+    }, 2000)
+  }
+
   useEffect(() => {
     getRoom()
   }, [url, getRoom])
@@ -44,8 +50,25 @@ export default function MainRoom() {
   }
 
   function handleRefresh() {
-    console.log("YES")
+    console.log('YES')
     getRoom()
+  }
+
+  function handleChangeSeat(seatNumber) {
+    console.log(currentSeat)
+    if (currentSeat === seatNumber) {
+      // already seat here
+      displayError('You already here')
+    } else if (seatIsOccupied(seatNumber, seating)) {
+      // already occupied
+      displayError("It's occupied")
+    } else {
+      // success, also need to check with the backend
+      // TODO: communicate with backend, if failed, let user refresh the page
+
+      // Success:
+      setCurrentSeat(seatNumber)
+    }
   }
 
   return (
@@ -59,15 +82,28 @@ export default function MainRoom() {
             </Col>
           ) : (
             seating.map((player, index) => {
+              let seatNumber = index + 1
               return (
-                <Player
+                <Col
                   key={player.id || uuid()}
-                  {...player}
-                  seatNumber={index + 1}
-                  loading={loading}
-                  currentSeat={currentSeat}
-                  seating={seating}
-                />
+                  className='container-fluid mt-4 treeViewComponent h-100'
+                >
+                  <Card border='primary' style={{ width: '18 rem', flex: 1 }}>
+                    <Card.Body className='d-flex flex-column mb-2'>
+                      <Card.Title as='h2'>{seatNumber}</Card.Title>
+
+                      <h4>{player.name}</h4>
+                      <Button
+                        disabled={loading}
+                        onClick={() => handleChangeSeat(seatNumber)}
+                        className='btn mt-auto'
+                        variant='info'
+                      >
+                        Sit
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                </Col>
               )
             })
           )}
@@ -103,7 +139,7 @@ function getPlayerInfo(room, target) {
       identity = player.identity
     }
   })
-  return { name, id, identity}
+  return { name, id, identity }
 }
 
 function getSeating(room) {
@@ -116,70 +152,17 @@ function getSeating(room) {
   for (let i = 1; i <= room.maxNumPlayer; i++) {
     let player = {}
     player = getPlayerInfo(room, i)
-    seatingPlan.push({ seatNumber: i, name: player.name, id: player.id, identity: player.identity })
+    seatingPlan.push({
+      seatNumber: i,
+      name: player.name,
+      id: player.id,
+      identity: player.identity,
+    })
   }
   return seatingPlan
 }
 
-
-
 // Player component
-function Player({
-  name,
-  seatNumber,
-  loading,
-  currentSeat,
-  seating,
-}) {
-  const { currentUser } = useAuth()
-  const [error, setError] = useState('')
-
-  const displayError = (message) => {
-    setError(message)
-    setTimeout(() => {
-      setError('')
-    }, 2000)
-  }
-
-  const handleOnclick = (seatNumber) => {
-    currentSeat = 3
-    if (currentSeat === seatNumber) {
-      // already seat here
-      displayError('You already here')
-    } else if (seatIsOccupied(seatNumber, seating)) {
-      // already occupied
-      displayError('It\'s occupied')
-    } else {
-      // success, also need to check with the backend
-      // TODO: communicate with backend, if failed, let user refresh the page
-
-      
-    }
-  }
-
-  return (
-    <>
-      <Col className='container-fluid mt-4 treeViewComponent h-100'>
-        <Card border='primary' style={{ width: '18 rem', flex: 1 }}>      
-
-          <Card.Body className='d-flex flex-column mb-2'>
-            <Card.Title as='h2'>{seatNumber}</Card.Title>
-
-            <h4>{name}</h4>
-            <Button
-              disabled={loading}
-              onClick={() => handleOnclick(seatNumber)}
-              className='btn mt-auto'
-              variant='info'
-            >
-              Sit
-            </Button>
-          </Card.Body>
-        </Card>
-      </Col>
-    </>
-  )
-}
 
 // Player.propTypes = {
 //   name: PropTypes.string.isRequired,
