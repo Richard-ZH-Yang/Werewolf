@@ -12,27 +12,26 @@ export default function MainRoom() {
 
   const [error, setError] = useState('')
   const [currentSeat, setCurrentSeat] = useState(0)
-    const [loading, setLoading] = useState(true)
-    const [room, setRoom] = useState([])
-    const [seating, setSeating] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [room, setRoom] = useState([])
+  const [seating, setSeating] = useState([])
 
   const { currentUser, logout } = useAuth()
   const navigate = useNavigate()
 
-    const getRoom = useCallback(async () => {
-      const response = await fetch(url)
-      const room = await response.json()
-      setRoom(room)
-      setSeating(getSeating(room))
-      setLoading(false)
-    }, [url])
+  const getRoom = useCallback(async () => {
+    const response = await fetch(url)
+    const room = await response.json()
+    setRoom(room)
+    setSeating(getSeating(room))
+    setLoading(false)
+  }, [url])
 
-    useEffect(() => {
-      getRoom()
-    }, [url, getRoom])
+  useEffect(() => {
+    getRoom()
+  }, [url, getRoom])
 
   async function handleLogout() {
-    setError('')
 
     try {
       await logout()
@@ -42,6 +41,10 @@ export default function MainRoom() {
     }
   }
 
+  function handleRefresh() {
+    console.log("YES")
+    getRoom()
+  }
 
   return (
     <>
@@ -67,14 +70,15 @@ export default function MainRoom() {
           )}
         </Row>
       </Container>
-
-      <Button className='btn text-center w-100 mt-2' onClick={handleLogout}>
+      <Button disabled={loading} className='btn text-center w-100 mt-2' onClick={handleRefresh}>
+        Refresh
+      </Button>
+      <Button disabled={loading} className='btn text-center w-100 mt-2' onClick={handleLogout}>
         Log out
       </Button>
     </>
   )
 }
-
 
 function getPlayerInfo(room, target) {
   let name = ''
