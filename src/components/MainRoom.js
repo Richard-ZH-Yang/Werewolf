@@ -14,7 +14,7 @@ export default function MainRoom() {
   const [error, setError] = useState('')
   const [currentSeat, setCurrentSeat] = useState(0)
   const [loading, setLoading] = useState(true)
-  const [room, setRoom] = useState([])
+  // const [room, setRoom] = useState([])
   const [seating, setSeating] = useState([])
 
   const { currentUser, logout } = useAuth()
@@ -23,7 +23,7 @@ export default function MainRoom() {
   const getRoom = useCallback(async () => {
     const response = await fetch(url)
     const room = await response.json()
-    setRoom(room)
+    // setRoom(room)
     setSeating(getSeating(room))
     setLoading(false)
   }, [url])
@@ -68,7 +68,12 @@ export default function MainRoom() {
 
       // Success:
       setCurrentSeat(seatNumber)
+      handleRefresh()
     }
+  }
+
+  function handleViewIdentity() {
+    // TODO: to be complete
   }
 
   return (
@@ -116,10 +121,18 @@ export default function MainRoom() {
       >
         Refresh
       </Button>
+
       <Button
         disabled={loading}
         className='btn text-center w-100 mt-2'
-        onClick={handleLogout}
+        onClick={handleRefresh}
+      >
+        View my identity
+      </Button>
+      <Button
+        disabled={loading}
+        className='btn text-center w-100 mt-2'
+        onClick={handleViewIdentity}
       >
         Log out
       </Button>
