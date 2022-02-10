@@ -3,10 +3,12 @@ import { Card, Button, Alert, Form } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
 import { useFetch } from './useFetch'
+import CreateRoom from './CreateRoom'
 
 export default function SearchRoom() {
   const [error, setError] = useState('')
   const [roomNumber, setRoomNumber] = useState(0)
+  const [showCreateRoom, setShowCreateRoom] = useState(false)
   const { currentUser, logout } = useAuth()
   const navigate = useNavigate()
 
@@ -42,6 +44,11 @@ export default function SearchRoom() {
     }
   }
 
+  function handleCreateRoom() {
+    setShowCreateRoom(!showCreateRoom)
+    console.log(showCreateRoom)
+  }
+
   return (
     <>
       {error && <Alert variant='danger'>{error}</Alert>}
@@ -62,10 +69,7 @@ export default function SearchRoom() {
             You could enter an existing room or create a new one
           </Form.Text>
         </Form.Group>
-        <Button
-          className='btn text-center w-100 mt-2'
-          type='submit'
-        >
+        <Button className='btn text-center w-100 mt-2' type='submit'>
           Submit
         </Button>
       </Form>
@@ -73,6 +77,15 @@ export default function SearchRoom() {
       <Button className='btn text-center w-100 mt-2' onClick={handleLogout}>
         Log out
       </Button>
+
+      <Button
+        variant={showCreateRoom ? 'danger' : 'success'}
+        className='btn text-center w-100 mt-2'
+        onClick={handleCreateRoom}
+      >
+        {showCreateRoom ? 'Close' : 'Create new room'}
+      </Button>
+      {showCreateRoom && <CreateRoom />}
     </>
   )
 }

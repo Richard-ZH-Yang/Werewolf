@@ -1,22 +1,46 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Card, Button, Alert, Row, Col, Container } from 'react-bootstrap'
 import { useAuth, logout } from '../contexts/AuthContext'
-import { useFetch } from './useFetch'
-import Player from './Player'
+// import { useFetch } from './useFetch'
+// import Player from './Player'
+import uuid from 'react-uuid'
+import PropTypes from 'prop-types'
 
 export default function MainRoom() {
   const { id } = useParams()
-  const { loading, seating, room } = useFetch(`http://localhost:4567/rooms/${id}`)
+  const url = `http://localhost:4567/rooms/${id}`
+
   const [error, setError] = useState('')
   const [currentSeat, setCurrentSeat] = useState(0)
+  const [loading, setLoading] = useState(true)
+  // const [room, setRoom] = useState([])
+  const [seating, setSeating] = useState([])
+
   const { currentUser, logout } = useAuth()
   const navigate = useNavigate()
 
+  const getRoom = useCallback(async () => {
+    const response = await fetch(url)
+    const room = await response.json()
+    // setRoom(room)
+    setSeating(getSeating(room))
+    setLoading(false)
+  }, [url])
+
+  const displayError = (message) => {
+    setError(message)
+    setTimeout(() => {
+      setError('')
+    }, 2000)
+  }
+
+  useEffect(() => {
+    getRoom()
+  }, [url, getRoom])
 
   async function handleLogout() {
     setError('')
-
     try {
       await logout()
       navigate('/login', { replace: true })
@@ -25,31 +49,148 @@ export default function MainRoom() {
     }
   }
 
+  function handleRefresh() {
+    console.log('YES')
+    getRoom()
+  }
+
+  function handleChangeSeat(seatNumber) {
+    console.log(currentSeat)
+    if (currentSeat === seatNumber) {
+      // already seat here
+      displayError('You already here')
+    } else if (seatIsOccupied(seatNumber, seating)) {
+      // already occupied
+      displayError("It's occupied")
+    } else {
+      // success, also need to check with the backend
+      // TODO: communicate with backend, if failed, let user refresh the page
+
+      // Success:
+      setCurrentSeat(seatNumber)
+      handleRefresh()
+    }
+  }
+
+  function handleViewIdentity() {
+    // TODO: to be complete
+  }
+
   return (
     <>
-      {/* <CardDeck style={{ display: 'flex', flexDirection: 'row' }}> */}
-      <Container
-        className='h-100'
-        >
+      <Container className='h-100'>
+        {error && <Alert variant='danger'>{error}</Alert>}
         <Row className='h-100 w-100 align-items-center'>
-            {loading ? (
-              <Col md={20} className='treeViewComponent h-100'>
-                <h1>loading ...</h1>
-              </Col>
-              
-            ) : (
-              seating.map((player, index) => {
-                return <Player key={player.id} {...player} seatNumber={index + 1} loading = {loading} currentSeat = {currentSeat} seating = {seating}/>
-              })
-            )}
+          {loading ? (
+            <Col md={20} className='treeViewComponent h-100'>
+              <h1>loading ...</h1>
+            </Col>
+          ) : (
+            seating.map((player, index) => {
+              let seatNumber = index + 1
+              return (
+                <Col
+                  key={player.id || uuid()}
+                  className='container-fluid mt-4 treeViewComponent h-100'
+                >
+                  <Card border='primary' style={{ width: '18 rem', flex: 1 }}>
+                    <Card.Body className='d-flex flex-column mb-2'>
+                      <Card.Title as='h2'>{seatNumber}</Card.Title>
+
+                      <h4>{player.name}</h4>
+                      <Button
+                        disabled={loading}
+                        onClick={() => handleChangeSeat(seatNumber)}
+                        className='btn mt-auto'
+                        variant='info'
+                      >
+                        Sit
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              )
+            })
+          )}
         </Row>
       </Container>
+      <Button
+        disabled={loading}
+        className='btn text-center w-100 mt-2'
+        onClick={handleRefresh}
+      >
+        Refresh
+      </Button>
 
-      <Button className='btn text-center w-100 mt-2' onClick={handleLogout}>
+      <Button
+        disabled={loading}
+        className='btn text-center w-100 mt-2'
+        onClick={handleRefresh}
+      >
+        View my identity
+      </Button>
+      <Button
+        disabled={loading}
+        className='btn text-center w-100 mt-2'
+        onClick={handleViewIdentity}
+      >
         Log out
       </Button>
     </>
   )
 }
 
+// custome hooks
+function getPlayerInfo(room, target) {
+  let name = ''
+  let id = ''
+  let identity = ''
+  room.players.forEach((player) => {
+    if (player.seat === target) {
+      name = player.name
+      id = player.id
+      identity = player.identity
+    }
+  })
+  return { name, id, identity }
+}
 
+function getSeating(room) {
+  let seatingPlan = []
+  const currentSeats = []
+  room.players.forEach((player) => {
+    currentSeats.push(player.seat)
+  })
+
+  for (let i = 1; i <= room.maxNumPlayer; i++) {
+    let player = {}
+    player = getPlayerInfo(room, i)
+    seatingPlan.push({
+      seatNumber: i,
+      name: player.name,
+      id: player.id,
+      identity: player.identity,
+    })
+  }
+  return seatingPlan
+}
+
+// Player component
+
+// Player.propTypes = {
+//   name: PropTypes.string.isRequired,
+// }
+
+// Player.defaultProps = {
+//   name: 'no name',
+// }
+
+function seatIsOccupied(seatNumber, seating) {
+  let result = false
+  seating.forEach((seat) => {
+    if (seat.seatNumber === seatNumber && seat.name !== '') {
+      result = true
+    }
+  })
+  return result
+}
