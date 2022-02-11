@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { Form, Button, Card, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
 
-const CreateRoom = () => {
+const CreateRoom = ({displayError}) => {
   const wolfRef = useRef()
   const civilianRef = useRef()
   const prophetRef = useRef()
@@ -36,6 +36,11 @@ const CreateRoom = () => {
       body: JSON.stringify(newRoom),
     })
     // console.log(res.status)
+    if (res.status === 404) {
+     displayError("Error! Cannot create that room")
+
+    }
+    
     
   }
 
