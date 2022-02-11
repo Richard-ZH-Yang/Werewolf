@@ -13,7 +13,7 @@ const CreateRoom = () => {
     const { currentUser } = useAuth()
 
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
     const newRoom = {
       judgeId: currentUser.email,
@@ -28,7 +28,15 @@ const CreateRoom = () => {
     // TODO: send post request to backend
     // if success, create and direct to new room with current user as a judge
     // Otherwise, show an error message
-    console.log(newRoom)
+    const res = await fetch('http://localhost:4567/rooms', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(newRoom),
+    })
+    // console.log(res.status)
+    
   }
 
   return (
