@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { Form, Button, Card, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
 
-const CreateRoom = ({displayError}) => {
+const CreateRoom = ({ displayError }) => {
   const wolfRef = useRef()
   const civilianRef = useRef()
   const prophetRef = useRef()
@@ -10,8 +10,7 @@ const CreateRoom = ({displayError}) => {
   const hunterRef = useRef()
   const idiotRef = useRef()
   const guardianRef = useRef()
-    const { currentUser } = useAuth()
-
+  const { currentUser } = useAuth()
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -23,7 +22,7 @@ const CreateRoom = ({displayError}) => {
       witch: witchRef.current.checked ? 1 : 0,
       hunter: hunterRef.current.checked ? 1 : 0,
       idiot: idiotRef.current.checked ? 1 : 0,
-      guardian: guardianRef.current.checked ? 1 : 0
+      guardian: guardianRef.current.checked ? 1 : 0,
     }
     // TODO: send post request to backend
     // if success, create and direct to new room with current user as a judge
@@ -36,12 +35,12 @@ const CreateRoom = ({displayError}) => {
       body: JSON.stringify(newRoom),
     })
     // console.log(res.status)
+    const data = res.json()
     if (res.status === 404) {
-     displayError("Error! Cannot create that room")
-
+      displayError('Error! Cannot create that room')
+    } else {
+      navigate(`/mainroom/${data.url}`, { replace: true })
     }
-    
-    
   }
 
   return (
