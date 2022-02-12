@@ -92,6 +92,12 @@
       "idiot": 0,
       "guardian": 0,
       "id": 5
+    },
+    {
+      "currentUserId": "007@gmail.com",
+      "currentSeat": 0,
+      "targetSeat": 4,
+      "id": 6
     }
   ],
   "auth": [

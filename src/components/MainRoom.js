@@ -39,15 +39,15 @@ export default function MainRoom() {
     getRoom()
   }, [url, getRoom])
 
-  // async function handleLogout() {
-  //   setError('')
-  //   try {
-  //     await logout()
-  //     navigate('/login', { replace: true })
-  //   } catch {
-  //     setError('Failed to log out')
-  //   }
-  // }
+  async function handleLogout() {
+    setError('')
+    try {
+      await logout()
+      navigate('/login', { replace: true })
+    } catch {
+      setError('Failed to log out')
+    }
+  }
 
   function handleRefresh() {
     console.log('YES')
@@ -67,21 +67,25 @@ export default function MainRoom() {
       // TODO: communicate with backend, if failed, let user refresh the page
 
       const plan = {
+        currentRoomId: currentRoomId,
         currentUserId: currentUser.email,
         currentSeat: currentSeat,
         targetSeat: seatNumber
       }
 
-      const res = await fetch('http://localhost:4567/rooms', {
+      const res = await fetch('http://localhost:4567/seat', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
         },
         body: JSON.stringify(plan),
       })
+
       if (res.status === 404) {
+        // ERROR
 
       } else {
+        // success
         setCurrentSeat(seatNumber)
         handleRefresh()
       }
@@ -142,14 +146,14 @@ export default function MainRoom() {
       <Button
         disabled={loading}
         className='btn text-center w-100 mt-2'
-        onClick={handleRefresh}
+        onClick={handleViewIdentity}
       >
         View my identity
       </Button>
       <Button
         disabled={loading}
         className='btn text-center w-100 mt-2'
-        onClick={handleViewIdentity}
+        onClick={handleLogout}
       >
         Log out
       </Button>
