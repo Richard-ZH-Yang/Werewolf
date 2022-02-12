@@ -39,15 +39,15 @@ export default function MainRoom() {
     getRoom()
   }, [url, getRoom])
 
-  async function handleLogout() {
-    setError('')
-    try {
-      await logout()
-      navigate('/login', { replace: true })
-    } catch {
-      setError('Failed to log out')
-    }
-  }
+  // async function handleLogout() {
+  //   setError('')
+  //   try {
+  //     await logout()
+  //     navigate('/login', { replace: true })
+  //   } catch {
+  //     setError('Failed to log out')
+  //   }
+  // }
 
   function handleRefresh() {
     console.log('YES')

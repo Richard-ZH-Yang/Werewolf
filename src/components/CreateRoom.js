@@ -1,8 +1,13 @@
 import React, { useRef, useState } from 'react'
 import { Form, Button, Card, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+
 
 const CreateRoom = ({ displayError }) => {
+   const navigate = useNavigate()
+
+
   const wolfRef = useRef()
   const civilianRef = useRef()
   const prophetRef = useRef()
