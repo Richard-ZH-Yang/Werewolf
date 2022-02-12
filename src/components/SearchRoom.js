@@ -70,7 +70,7 @@ export default function SearchRoom() {
           </Form.Text>
         </Form.Group>
         <Button className='btn text-center w-100 mt-2' type='submit'>
-          Submit
+          Join
         </Button>
       </Form>
 
@@ -83,7 +83,7 @@ export default function SearchRoom() {
         className='btn text-center w-100 mt-2'
         onClick={handleCreateRoom}
       >
-        {showCreateRoom ? 'Close' : 'Create new room'}
+        {showCreateRoom ? 'Close' : 'Create a new room'}
       </Button>
       {showCreateRoom && <CreateRoom displayError={displayError} />}
     </>
