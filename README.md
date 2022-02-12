@@ -23,13 +23,13 @@ The role of Sheriff will be elected on the first night before the announcement o
 Night can open his eyes to meet his teammates and discuss tactics and choose the target to kill. Werewolves can choose not to kill any players that night or kill themselves. Mixed into the village during the day to confuse good people. The werewolf can choose to announce the character card self-elimination at any time during the day and force it to enter the night phase and leave the field at the end of the night phase.
 
 #### Human Camp
-`Civilians`:
+`Civilian`:
 No special skills, eyes closed throughout the night phase, and players who are suspected of being a werewolf are voted to exile through the information obtained during the day phase
 
 `Prophet`:
 A priestly character. You can check the faction of a surviving player every night, and report information to good people by speaking during the day
 
-`Sorceress`:
+`Witch`:
 A priestly character. Have a bottle of antidote and a bottle of poison. When the antidote is not used, you can know who the werewolf killed and decide whether to save the player. However, the antidote cannot be used to save oneself at all times. The witch can also use the information obtained during the day to poison the suspected object, and the object cannot use the skills after death. Antidote and poison cannot be used on the same night.
 
 `Hunter`:
