@@ -1,8 +1,13 @@
 import React, { useRef, useState } from 'react'
 import { Form, Button, Card, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
-const CreateRoom = () => {
+
+const CreateRoom = ({ displayError }) => {
+   const navigate = useNavigate()
+
+
   const wolfRef = useRef()
   const civilianRef = useRef()
   const prophetRef = useRef()
@@ -10,10 +15,9 @@ const CreateRoom = () => {
   const hunterRef = useRef()
   const idiotRef = useRef()
   const guardianRef = useRef()
-    const { currentUser } = useAuth()
+  const { currentUser } = useAuth()
 
-
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
     const newRoom = {
       judgeId: currentUser.email,
@@ -23,12 +27,25 @@ const CreateRoom = () => {
       witch: witchRef.current.checked ? 1 : 0,
       hunter: hunterRef.current.checked ? 1 : 0,
       idiot: idiotRef.current.checked ? 1 : 0,
-      guardian: guardianRef.current.checked ? 1 : 0
+      guardian: guardianRef.current.checked ? 1 : 0,
     }
     // TODO: send post request to backend
     // if success, create and direct to new room with current user as a judge
     // Otherwise, show an error message
-    console.log(newRoom)
+    const res = await fetch('http://localhost:4567/rooms', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(newRoom),
+    })
+    // console.log(res.status)
+    const data = res.json()
+    if (res.status === 404) {
+      displayError('Error! Cannot create that room')
+    } else {
+      navigate(`/mainroom/${data.url}`, { replace: true })
+    }
   }
 
   return (

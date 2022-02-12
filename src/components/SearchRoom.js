@@ -85,7 +85,7 @@ export default function SearchRoom() {
       >
         {showCreateRoom ? 'Close' : 'Create new room'}
       </Button>
-      {showCreateRoom && <CreateRoom />}
+      {showCreateRoom && <CreateRoom displayError={displayError} />}
     </>
   )
 }

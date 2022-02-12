@@ -3,7 +3,7 @@
     {
       "id": 1,
       "maxNumPlayer": 4,
-      "players":[
+      "players": [
         {
           "id": "1@gmail.com",
           "identity": "PROPHET",
@@ -59,6 +59,39 @@
           "seat": 5
         }
       ]
+    },
+    {
+      "judgeId": "007@gmail.com",
+      "wolf": 3,
+      "civilian": 3,
+      "prophet": 1,
+      "witch": 1,
+      "hunter": 1,
+      "idiot": 0,
+      "guardian": 0,
+      "id": 3
+    },
+    {
+      "judgeId": "007@gmail.com",
+      "wolf": 3,
+      "civilian": 3,
+      "prophet": 1,
+      "witch": 1,
+      "hunter": 1,
+      "idiot": 0,
+      "guardian": 0,
+      "id": 4
+    },
+    {
+      "judgeId": "007@gmail.com",
+      "wolf": 5,
+      "civilian": 3,
+      "prophet": 1,
+      "witch": 1,
+      "hunter": 1,
+      "idiot": 0,
+      "guardian": 0,
+      "id": 5
     }
   ],
   "auth": [
