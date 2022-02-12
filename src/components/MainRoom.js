@@ -13,7 +13,7 @@ export default function MainRoom() {
   const url = `http://localhost:4567/rooms/${id}`
 
   const [error, setError] = useState('')
-  const [currentSeat, setCurrentSeat] = useState(0)
+  const [currentSeat, setCurrentSeat] = useState(4)
   const [loading, setLoading] = useState(true)
   // const [room, setRoom] = useState([])
   const [seating, setSeating] = useState([])
