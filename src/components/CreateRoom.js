@@ -94,7 +94,7 @@ const CreateRoom = ({ displayError }) => {
         <Form.Check type='checkbox' label='Guardian' ref={guardianRef} />
       </Form.Group>
       <Button className='btn text-center w-100 mt-2' type='submit'>
-        Submit
+        Create
       </Button>
     </Form>
   )

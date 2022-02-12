@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Card, Button, Alert, Row, Col, Container } from 'react-bootstrap'
 import { useAuth, logout } from '../contexts/AuthContext'
+import ShowIdentity from './ShowIdentity'
 // import { useFetch } from './useFetch'
 // import Player from './Player'
 import uuid from 'react-uuid'
@@ -16,6 +17,7 @@ export default function MainRoom() {
   const [loading, setLoading] = useState(true)
   // const [room, setRoom] = useState([])
   const [seating, setSeating] = useState([])
+  const [showIdentity, setShowIdentity] = useState(false)
 
   const { currentUser, logout } = useAuth()
   const navigate = useNavigate()
@@ -39,23 +41,21 @@ export default function MainRoom() {
     getRoom()
   }, [url, getRoom])
 
-  // async function handleLogout() {
-  //   setError('')
-  //   try {
-  //     await logout()
-  //     navigate('/login', { replace: true })
-  //   } catch {
-  //     setError('Failed to log out')
-  //   }
-  // }
+  async function handleLogout() {
+    setError('')
+    try {
+      await logout()
+      navigate('/login', { replace: true })
+    } catch {
+      setError('Failed to log out')
+    }
+  }
 
   function handleRefresh() {
-    console.log('YES')
     getRoom()
   }
 
   async function handleChangeSeat(seatNumber) {
-    console.log(currentSeat)
     if (currentSeat === seatNumber) {
       // already seat here
       displayError('You already here')
@@ -67,30 +67,44 @@ export default function MainRoom() {
       // TODO: communicate with backend, if failed, let user refresh the page
 
       const plan = {
+        currentRoomId: id,
         currentUserId: currentUser.email,
         currentSeat: currentSeat,
-        targetSeat: seatNumber
+        targetSeat: seatNumber,
       }
 
-      const res = await fetch('http://localhost:4567/rooms', {
+      const res = await fetch('http://localhost:4567/seat', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
         },
         body: JSON.stringify(plan),
       })
-      if (res.status === 404) {
 
+      if (res.status === 404) {
+        // ERROR
       } else {
+        // success
         setCurrentSeat(seatNumber)
         handleRefresh()
       }
-      
     }
   }
 
   function handleViewIdentity() {
-    // TODO: to be complete
+    if (currentSeat === 0) {
+      displayError('Please select a seat first')
+    } else {
+      setShowIdentity(true)
+    }
+  }
+
+  function handleCloseViewIdentity() {
+    if (currentSeat === 0) {
+      displayError('Please select a seat first')
+    } else {
+      setShowIdentity(false)
+    }
   }
 
   return (
@@ -142,17 +156,27 @@ export default function MainRoom() {
       <Button
         disabled={loading}
         className='btn text-center w-100 mt-2'
-        onClick={handleRefresh}
+        onClick={handleViewIdentity}
       >
         View my identity
       </Button>
       <Button
         disabled={loading}
         className='btn text-center w-100 mt-2'
-        onClick={handleViewIdentity}
+        onClick={handleLogout}
       >
         Log out
       </Button>
+
+      {loading ? (
+          <h1>loading ...</h1>
+      ) : (
+        <ShowIdentity
+          show={showIdentity}
+          onHide={handleCloseViewIdentity}
+          player={currentSeat === 0? {} : seating[currentSeat - 1]}
+        />
+      )}
     </>
   )
 }
