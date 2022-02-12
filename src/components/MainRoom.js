@@ -54,7 +54,7 @@ export default function MainRoom() {
     getRoom()
   }
 
-  function handleChangeSeat(seatNumber) {
+  async function handleChangeSeat(seatNumber) {
     console.log(currentSeat)
     if (currentSeat === seatNumber) {
       // already seat here
@@ -66,9 +66,26 @@ export default function MainRoom() {
       // success, also need to check with the backend
       // TODO: communicate with backend, if failed, let user refresh the page
 
-      // Success:
-      setCurrentSeat(seatNumber)
-      handleRefresh()
+      const plan = {
+        currentUserId: currentUser.email,
+        currentSeat: currentSeat,
+        targetSeat: seatNumber
+      }
+
+      const res = await fetch('http://localhost:4567/rooms', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(plan),
+      })
+      if (res.status === 404) {
+
+      } else {
+        setCurrentSeat(seatNumber)
+        handleRefresh()
+      }
+      
     }
   }
 
