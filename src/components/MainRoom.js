@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Card, Button, Alert, Row, Col, Container } from 'react-bootstrap'
 import { useAuth, logout } from '../contexts/AuthContext'
+import ShowIdentity from './ShowIdentity'
 // import { useFetch } from './useFetch'
 // import Player from './Player'
 import uuid from 'react-uuid'
@@ -16,6 +17,7 @@ export default function MainRoom() {
   const [loading, setLoading] = useState(true)
   // const [room, setRoom] = useState([])
   const [seating, setSeating] = useState([])
+  const [showIdentity, setShowIdentity] = useState(false)
 
   const { currentUser, logout } = useAuth()
   const navigate = useNavigate()
@@ -95,9 +97,17 @@ export default function MainRoom() {
     if (currentSeat === 0) {
       displayError('Please select a seat first')
     } else {
-      
+      setShowIdentity(true)
     }
   }
+
+    function handleCloseViewIdentity() {
+      if (currentSeat === 0) {
+        displayError('Please select a seat first')
+      } else {
+        setShowIdentity(false)
+      }
+    }
 
   return (
     <>
@@ -159,6 +169,8 @@ export default function MainRoom() {
       >
         Log out
       </Button>
+
+      <ShowIdentity show={showIdentity} onHide={handleCloseViewIdentity} />
     </>
   )
 }
