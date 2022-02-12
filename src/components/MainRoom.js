@@ -107,8 +107,6 @@ export default function MainRoom() {
     }
   }
 
-  console.log(seating[1])
-
   return (
     <>
       <Container className='h-100'>
