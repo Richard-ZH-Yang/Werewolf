@@ -13,7 +13,7 @@ export default function MainRoom() {
   const url = `http://localhost:4567/rooms/${id}`
 
   const [error, setError] = useState('')
-  const [currentSeat, setCurrentSeat] = useState(4)
+  const [currentSeat, setCurrentSeat] = useState(0)
   const [loading, setLoading] = useState(true)
   // const [room, setRoom] = useState([])
   const [seating, setSeating] = useState([])
@@ -70,7 +70,7 @@ export default function MainRoom() {
         currentRoomId: id,
         currentUserId: currentUser.email,
         currentSeat: currentSeat,
-        targetSeat: seatNumber
+        targetSeat: seatNumber,
       }
 
       const res = await fetch('http://localhost:4567/seat', {
@@ -83,13 +83,11 @@ export default function MainRoom() {
 
       if (res.status === 404) {
         // ERROR
-
       } else {
         // success
         setCurrentSeat(seatNumber)
         handleRefresh()
       }
-      
     }
   }
 
@@ -101,13 +99,15 @@ export default function MainRoom() {
     }
   }
 
-    function handleCloseViewIdentity() {
-      if (currentSeat === 0) {
-        displayError('Please select a seat first')
-      } else {
-        setShowIdentity(false)
-      }
+  function handleCloseViewIdentity() {
+    if (currentSeat === 0) {
+      displayError('Please select a seat first')
+    } else {
+      setShowIdentity(false)
     }
+  }
+
+  console.log(seating[1])
 
   return (
     <>
@@ -170,7 +170,15 @@ export default function MainRoom() {
         Log out
       </Button>
 
-      <ShowIdentity show={showIdentity} onHide={handleCloseViewIdentity} />
+      {loading ? (
+          <h1>loading ...</h1>
+      ) : (
+        <ShowIdentity
+          show={showIdentity}
+          onHide={handleCloseViewIdentity}
+          player={currentSeat === 0? {} : seating[currentSeat - 1]}
+        />
+      )}
     </>
   )
 }
