@@ -50,12 +50,10 @@ export default function MainRoom() {
   }
 
   function handleRefresh() {
-    console.log('YES')
     getRoom()
   }
 
   async function handleChangeSeat(seatNumber) {
-    console.log(currentSeat)
     if (currentSeat === seatNumber) {
       // already seat here
       displayError('You already here')
@@ -67,7 +65,7 @@ export default function MainRoom() {
       // TODO: communicate with backend, if failed, let user refresh the page
 
       const plan = {
-        currentRoomId: currentRoomId,
+        currentRoomId: id,
         currentUserId: currentUser.email,
         currentSeat: currentSeat,
         targetSeat: seatNumber
@@ -94,7 +92,11 @@ export default function MainRoom() {
   }
 
   function handleViewIdentity() {
-    // TODO: to be complete
+    if (currentSeat === 0) {
+      displayError('Please select a seat first')
+    } else {
+      
+    }
   }
 
   return (
