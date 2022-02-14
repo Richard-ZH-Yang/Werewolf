@@ -1,0 +1,29 @@
+{
+  "name": "werewolf",
+  "version": "1.0.0",
+  "description": "Werewolf application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Richard-ZH-Yang/Werewolf.git"
+  },
+  "author": "Zhonghao (Richard)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Richard-ZH-Yang/Werewolf/issues"
+  },
+  "homepage": "https://github.com/Richard-ZH-Yang/Werewolf#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "mongoose": "^6.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
