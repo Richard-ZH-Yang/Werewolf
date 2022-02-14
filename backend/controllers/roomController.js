@@ -1,18 +1,26 @@
 // @desc   get room
 // @route  GET /api/rooms/:id
 // @access Private
-const getRooms = (req, res) => {
+const getRoom = (req, res) => {
   res.status(200).json({ result: `get room ${req.params.id}` })
 }
 
 // @desc   update room
-// @route  POST /api/rooms/:id
+// @route  PUT /api/rooms/:id
 // @access Private
-const updateRooms = (req, res) => {
+const updateRoom = (req, res) => {
    res.status(200).json({ result: `update room ${req.params.id}` })
 
 }
 
+// @desc   create room
+// @route  POST /api/rooms
+// @access Private
+const createRoom = (req, res) => {
+   res.status(200).json({ result: `create a new room` })
+
+}
+
 module.exports = {
- getRooms, updateRooms
+ getRoom, updateRoom, createRoom,
 }
