@@ -14,6 +14,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
 app.use('/api/rooms', require('./routes/roomRoutes'))
+app.use('/api/players', require('./routes/playerRoutes'))
 
 app.use(errorHandler)
 
