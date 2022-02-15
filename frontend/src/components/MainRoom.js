@@ -15,7 +15,6 @@ export default function MainRoom() {
   const [error, setError] = useState('')
   const [currentSeat, setCurrentSeat] = useState(0)
   const [loading, setLoading] = useState(true)
-  // const [room, setRoom] = useState([])
   const [seating, setSeating] = useState([])
   const [showIdentity, setShowIdentity] = useState(false)
 
@@ -25,7 +24,6 @@ export default function MainRoom() {
   const getRoom = useCallback(async () => {
     const response = await fetch(url)
     const room = await response.json()
-    // setRoom(room)
     setSeating(getSeating(room))
     setLoading(false)
   }, [url])
@@ -182,37 +180,31 @@ export default function MainRoom() {
 }
 
 // custome hooks
-function getPlayerInfo(room, target) {
-  let name = ''
-  let id = ''
-  let identity = ''
-  room.players.forEach((player) => {
-    if (player.seat === target) {
-      name = player.name
-      id = player.id
-      identity = player.identity
-    }
-  })
-  return { name, id, identity }
-}
-
 function getSeating(room) {
   let seatingPlan = []
-  const currentSeats = []
-  room.players.forEach((player) => {
-    currentSeats.push(player.seat)
-  })
+  // for (let i = 1; i <= room.seats.length(); i++) {
+  //   let player = {room.seats[i]}
+  //   seatingPlan.push({
+  //     seatNumber: i,
+  //     name: player.name,
+  //     id: player.id,
+  //     identity: player.identity,
+  //   })
+  // }
 
-  for (let i = 1; i <= room.maxNumPlayer; i++) {
-    let player = {}
-    player = getPlayerInfo(room, i)
+  room.seats.forEach((seat)=> {
+    let player = seat.player
     seatingPlan.push({
-      seatNumber: i,
+      seatNumber: seat.id,
       name: player.name,
       id: player.id,
       identity: player.identity,
     })
-  }
+  })
+  // sorts in ascending order by the seating number
+  seatingPlan.sort((a ,b)=> {
+    return a.seatNumber - b.seatNumber
+  })
   return seatingPlan
 }
 
