@@ -70,13 +70,64 @@
         },
         {
           "id": 6,
-          "player": {}
+          "player": {
+            "id": "4@gmail.com",
+            "identity": "CIVILIAN",
+            "name": "WYC"
+          }
         },
         {
           "id": 7,
           "player": {}
         }
       ]
+    }
+  ],
+
+  "players": [
+    {
+      "id": "1@gmail.com",
+      "name": "Richard",
+      "wolfWins": 0,
+      "civilianWins": 0,
+      "prophetWins": 1,
+      "witchWins": 0,
+      "hunterWins": 0,
+      "idiotWins": 0,
+      "guardianWins": 0
+    },
+    {
+      "id": "2@gmail.com",
+      "name": "Ding",
+      "wolfWins": 0,
+      "civilianWins": 0,
+      "prophetWins": 0,
+      "witchWins": 0,
+      "hunterWins": 0,
+      "idiotWins": 0,
+      "guardianWins": 0
+    },
+    {
+      "id": "3@gmail.com",
+      "name": "Lavender",
+      "wolfWins": 0,
+      "civilianWins": 0,
+      "prophetWins": 0,
+      "witchWins": 0,
+      "hunterWins": 0,
+      "idiotWins": 0,
+      "guardianWins": 0
+    },
+    {
+      "id": "4@gmail.com",
+      "name": "WYC",
+      "wolfWins": 0,
+      "civilianWins": 0,
+      "prophetWins": 0,
+      "witchWins": 0,
+      "hunterWins": 0,
+      "idiotWins": 0,
+      "guardianWins": 0
     }
   ]
 }
