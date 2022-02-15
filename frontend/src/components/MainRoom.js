@@ -24,10 +24,12 @@ export default function MainRoom() {
   const getRoom = useCallback(async () => {
     const response = await fetch(url)
     const room = await response.json()
+    // TODO: maybe also change the url, set url as state, as room.id is the room number
+
     let seating = room.seats
 
     // sort the seat number in ascending order
-    seating.sort((a, b)=> {
+    seating.sort((a, b) => {
       return a.id - b.id
     })
 
@@ -114,80 +116,73 @@ export default function MainRoom() {
 
   return (
     <>
-      <Container className='h-100'>
-        {error && <Alert variant='danger'>{error}</Alert>}
-        <Row className='h-100 w-100 align-items-center'>
-          {loading ? (
-            <Col md={20} className='treeViewComponent h-100'>
-              <h1>loading ...</h1>
-            </Col>
-          ) : (
-            seating.map((seat) => {
-              let seatNumber = seat.id
-              return (
-                <Col
-                  key={seat.player.id || uuid()}
-                  className='container-fluid mt-4 treeViewComponent h-100'
-                >
-                  <Card border='primary' style={{ width: '18 rem', flex: 1 }}>
-                    <Card.Body className='d-flex flex-column mb-2'>
-                      <Card.Title as='h2'>{seatNumber}</Card.Title>
-
-                      <h4>{seat.player.name}</h4>
-                      <Button
-                        disabled={loading}
-                        onClick={() => handleChangeSeat(seatNumber)}
-                        className='btn mt-auto'
-                        variant='info'
-                      >
-                        Sit
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              )
-            })
-          )}
-        </Row>
-      </Container>
-      <Button
-        disabled={loading}
-        className='btn text-center w-100 mt-2'
-        onClick={handleRefresh}
-      >
-        Refresh
-      </Button>
-
-      <Button
-        disabled={loading}
-        className='btn text-center w-100 mt-2'
-        onClick={handleViewIdentity}
-      >
-        View my identity
-      </Button>
-      <Button
-        disabled={loading}
-        className='btn text-center w-100 mt-2'
-        onClick={handleLogout}
-      >
-        Log out
-      </Button>
-
       {loading ? (
-          <h1>loading ...</h1>
+        <h1>loading ...</h1>
       ) : (
-        <ShowIdentity
-          show={showIdentity}
-          onHide={handleCloseViewIdentity}
-          player={currentSeat === 0? {} : seating[currentSeat - 1]}
-        />
+        <div className='MainRoom'>
+          <Container className='h-100'>
+            {error && <Alert variant='danger'>{error}</Alert>}
+            <Row className='h-100 w-100 align-items-center'>
+              {seating.map((seat) => {
+                let seatNumber = seat.id
+                return (
+                  <Col
+                    key={seat.player.id || uuid()}
+                    className='container-fluid mt-4 treeViewComponent h-100'
+                  >
+                    <Card border='primary' style={{ width: '18 rem', flex: 1 }}>
+                      <Card.Body className='d-flex flex-column mb-2'>
+                        <Card.Title as='h2'>{seatNumber}</Card.Title>
+
+                        <h4>{seat.player.name}</h4>
+                        <Button
+                          disabled={loading}
+                          onClick={() => handleChangeSeat(seatNumber)}
+                          className='btn mt-auto'
+                          variant='info'
+                        >
+                          Sit
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                )
+              })}
+            </Row>
+          </Container>
+          <Button
+            disabled={loading}
+            className='btn text-center w-100 mt-2'
+            onClick={handleRefresh}
+          >
+            Refresh
+          </Button>
+
+          <Button
+            disabled={loading}
+            className='btn text-center w-100 mt-2'
+            onClick={handleViewIdentity}
+          >
+            View my identity
+          </Button>
+          <Button
+            disabled={loading}
+            className='btn text-center w-100 mt-2'
+            onClick={handleLogout}
+          >
+            Log out
+          </Button>
+
+          <ShowIdentity
+            show={showIdentity}
+            onHide={handleCloseViewIdentity}
+            player={currentSeat === 0 ? {} : seating[currentSeat - 1]}
+          />
+        </div>
       )}
     </>
   )
 }
-
-
-
 
 function seatIsOccupied(seatNumber, seating) {
   let result = false
