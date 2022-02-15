@@ -15,7 +15,6 @@ export default function MainRoom() {
   const [error, setError] = useState('')
   const [currentSeat, setCurrentSeat] = useState(0)
   const [loading, setLoading] = useState(true)
-  // const [room, setRoom] = useState([])
   const [seating, setSeating] = useState([])
   const [showIdentity, setShowIdentity] = useState(false)
 
@@ -25,8 +24,16 @@ export default function MainRoom() {
   const getRoom = useCallback(async () => {
     const response = await fetch(url)
     const room = await response.json()
-    // setRoom(room)
-    setSeating(getSeating(room))
+    // TODO: maybe also change the url, set url as state, as room.id is the room number
+
+    let seating = room.seats
+
+    // sort the seat number in ascending order
+    seating.sort((a, b) => {
+      return a.id - b.id
+    })
+
+    setSeating(seating)
     setLoading(false)
   }, [url])
 
@@ -109,122 +116,73 @@ export default function MainRoom() {
 
   return (
     <>
-      <Container className='h-100'>
-        {error && <Alert variant='danger'>{error}</Alert>}
-        <Row className='h-100 w-100 align-items-center'>
-          {loading ? (
-            <Col md={20} className='treeViewComponent h-100'>
-              <h1>loading ...</h1>
-            </Col>
-          ) : (
-            seating.map((player, index) => {
-              let seatNumber = index + 1
-              return (
-                <Col
-                  key={player.id || uuid()}
-                  className='container-fluid mt-4 treeViewComponent h-100'
-                >
-                  <Card border='primary' style={{ width: '18 rem', flex: 1 }}>
-                    <Card.Body className='d-flex flex-column mb-2'>
-                      <Card.Title as='h2'>{seatNumber}</Card.Title>
-
-                      <h4>{player.name}</h4>
-                      <Button
-                        disabled={loading}
-                        onClick={() => handleChangeSeat(seatNumber)}
-                        className='btn mt-auto'
-                        variant='info'
-                      >
-                        Sit
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              )
-            })
-          )}
-        </Row>
-      </Container>
-      <Button
-        disabled={loading}
-        className='btn text-center w-100 mt-2'
-        onClick={handleRefresh}
-      >
-        Refresh
-      </Button>
-
-      <Button
-        disabled={loading}
-        className='btn text-center w-100 mt-2'
-        onClick={handleViewIdentity}
-      >
-        View my identity
-      </Button>
-      <Button
-        disabled={loading}
-        className='btn text-center w-100 mt-2'
-        onClick={handleLogout}
-      >
-        Log out
-      </Button>
-
       {loading ? (
-          <h1>loading ...</h1>
+        <h1>loading ...</h1>
       ) : (
-        <ShowIdentity
-          show={showIdentity}
-          onHide={handleCloseViewIdentity}
-          player={currentSeat === 0? {} : seating[currentSeat - 1]}
-        />
+        <div className='MainRoom'>
+          <Container className='h-100'>
+            {error && <Alert variant='danger'>{error}</Alert>}
+            <Row className='h-100 w-100 align-items-center'>
+              {seating.map((seat) => {
+                let seatNumber = seat.id
+                return (
+                  <Col
+                    key={seat.player.id || uuid()}
+                    className='container-fluid mt-4 treeViewComponent h-100'
+                  >
+                    <Card border='primary' style={{ width: '18 rem', flex: 1 }}>
+                      <Card.Body className='d-flex flex-column mb-2'>
+                        <Card.Title as='h2'>{seatNumber}</Card.Title>
+
+                        <h4>{seat.player.name}</h4>
+                        <Button
+                          disabled={loading}
+                          onClick={() => handleChangeSeat(seatNumber)}
+                          className='btn mt-auto'
+                          variant='info'
+                        >
+                          Sit
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                )
+              })}
+            </Row>
+          </Container>
+          <Button
+            disabled={loading}
+            className='btn text-center w-100 mt-2'
+            onClick={handleRefresh}
+          >
+            Refresh
+          </Button>
+
+          <Button
+            disabled={loading}
+            className='btn text-center w-100 mt-2'
+            onClick={handleViewIdentity}
+          >
+            View my identity
+          </Button>
+          <Button
+            disabled={loading}
+            className='btn text-center w-100 mt-2'
+            onClick={handleLogout}
+          >
+            Log out
+          </Button>
+
+          <ShowIdentity
+            show={showIdentity}
+            onHide={handleCloseViewIdentity}
+            player={currentSeat === 0 ? {} : seating[currentSeat - 1]}
+          />
+        </div>
       )}
     </>
   )
 }
-
-// custome hooks
-function getPlayerInfo(room, target) {
-  let name = ''
-  let id = ''
-  let identity = ''
-  room.players.forEach((player) => {
-    if (player.seat === target) {
-      name = player.name
-      id = player.id
-      identity = player.identity
-    }
-  })
-  return { name, id, identity }
-}
-
-function getSeating(room) {
-  let seatingPlan = []
-  const currentSeats = []
-  room.players.forEach((player) => {
-    currentSeats.push(player.seat)
-  })
-
-  for (let i = 1; i <= room.maxNumPlayer; i++) {
-    let player = {}
-    player = getPlayerInfo(room, i)
-    seatingPlan.push({
-      seatNumber: i,
-      name: player.name,
-      id: player.id,
-      identity: player.identity,
-    })
-  }
-  return seatingPlan
-}
-
-// Player component
-
-// Player.propTypes = {
-//   name: PropTypes.string.isRequired,
-// }
-
-// Player.defaultProps = {
-//   name: 'no name',
-// }
 
 function seatIsOccupied(seatNumber, seating) {
   let result = false
