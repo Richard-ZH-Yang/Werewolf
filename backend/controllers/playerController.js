@@ -23,8 +23,16 @@ const createPlayer = asyncHandler(async (req, res) => {
   res.status(200).json({ result: `create a new player` })
 })
 
+// @desc   delete player
+// @route  DELETE /api/players/:id
+// @access Private
+const deletePlayer = asyncHandler(async (req, res) => {
+  res.status(200).json({ result: `delete a player` })
+})
+
 module.exports = {
   getPlayers,
   updatePlayer,
   createPlayer,
+  deletePlayer,
 }
