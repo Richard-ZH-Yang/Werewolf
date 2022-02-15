@@ -2,73 +2,81 @@
   "rooms": [
     {
       "id": 1,
-      "maxNumPlayer": 4,
-      "players": [
+      "seats": [
         {
-          "id": "1@gmail.com",
-          "identity": "PROPHET",
-          "name": "Richard",
-          "seat": 1
+          "id": 1,
+          "player": {
+            "id": "1@gmail.com",
+            "identity": "PROPHET",
+            "name": "Richard"
+          }
         },
         {
-          "id": "2@gmail.com",
-          "identity": "WOLF",
-          "name": "Ding",
-          "seat": 2
+          "id": 2,
+          "player": {
+            "id": "2@gmail.com",
+            "identity": "WOLF",
+            "name": "Ding"
+          }
         },
         {
-          "id": "3@gmail.com",
-          "identity": "JUDGE",
-          "name": "Lavender",
-          "seat": 3
+          "id": 3,
+          "player": {
+            "id": "3@gmail.com",
+            "identity": "JUDGE",
+            "name": "Lavender"
+          }
+        },
+        {
+          "id": 4,
+          "player": {}
         }
       ]
     },
     {
       "id": 2,
-      "maxNumPlayer": 7,
-      "players": [
+      "seats": [
         {
-          "id": "1@gmail.com",
-          "identity": "PROPHET",
-          "name": "Richard",
-          "seat": 1
+          "id": 1,
+          "player": {
+            "id": "1@gmail.com",
+            "identity": "PROPHET",
+            "name": "Richard"
+          }
         },
         {
-          "id": "2@gmail.com",
-          "identity": "WOLF",
-          "name": "Ding",
-          "seat": 2
+          "id": 2,
+          "player": {}
         },
         {
-          "id": "3@gmail.com",
-          "identity": "JUDGE",
-          "name": "Lavender",
-          "seat": 3
+          "id": 3,
+          "player": {
+            "id": "3@gmail.com",
+            "identity": "JUDGE",
+            "name": "Lavender"
+          }
         },
         {
-          "id": "4@gmail.com",
-          "identity": "CIVILIAN",
-          "name": "WYC",
-          "seat": 4
+          "id": 4,
+          "player": {}
         },
         {
-          "id": "5@gmail.com",
-          "identity": "WITCH",
-          "name": "YZH",
-          "seat": 5
+          "id": 5,
+          "player": {
+            "id": "2@gmail.com",
+            "identity": "WOLF",
+            "name": "Ding"
+          }
+        },
+        {
+          "id": 6,
+          "player": {}
+        },
+        {
+          "id": 7,
+          "player": {}
         }
       ]
-    }
-  ],
-  "auth": [
-    {
-      "email": "1@gamil.com",
-      "password": "123"
-    },
-    {
-      "email": "2@gamil.com",
-      "password": "123"
     }
   ]
 }
