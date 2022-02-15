@@ -24,7 +24,14 @@ export default function MainRoom() {
   const getRoom = useCallback(async () => {
     const response = await fetch(url)
     const room = await response.json()
-    setSeating(getSeating(room))
+    let seating = room.seats
+
+    // sort the seat number in ascending order
+    seating.sort((a, b)=> {
+      return a.id - b.id
+    })
+
+    setSeating(seating)
     setLoading(false)
   }, [url])
 
@@ -115,18 +122,18 @@ export default function MainRoom() {
               <h1>loading ...</h1>
             </Col>
           ) : (
-            seating.map((player, index) => {
-              let seatNumber = index + 1
+            seating.map((seat) => {
+              let seatNumber = seat.id
               return (
                 <Col
-                  key={player.id || uuid()}
+                  key={seat.player.id || uuid()}
                   className='container-fluid mt-4 treeViewComponent h-100'
                 >
                   <Card border='primary' style={{ width: '18 rem', flex: 1 }}>
                     <Card.Body className='d-flex flex-column mb-2'>
                       <Card.Title as='h2'>{seatNumber}</Card.Title>
 
-                      <h4>{player.name}</h4>
+                      <h4>{seat.player.name}</h4>
                       <Button
                         disabled={loading}
                         onClick={() => handleChangeSeat(seatNumber)}
@@ -179,44 +186,8 @@ export default function MainRoom() {
   )
 }
 
-// custome hooks
-function getSeating(room) {
-  let seatingPlan = []
-  // for (let i = 1; i <= room.seats.length(); i++) {
-  //   let player = {room.seats[i]}
-  //   seatingPlan.push({
-  //     seatNumber: i,
-  //     name: player.name,
-  //     id: player.id,
-  //     identity: player.identity,
-  //   })
-  // }
 
-  room.seats.forEach((seat)=> {
-    let player = seat.player
-    seatingPlan.push({
-      seatNumber: seat.id,
-      name: player.name,
-      id: player.id,
-      identity: player.identity,
-    })
-  })
-  // sorts in ascending order by the seating number
-  seatingPlan.sort((a ,b)=> {
-    return a.seatNumber - b.seatNumber
-  })
-  return seatingPlan
-}
 
-// Player component
-
-// Player.propTypes = {
-//   name: PropTypes.string.isRequired,
-// }
-
-// Player.defaultProps = {
-//   name: 'no name',
-// }
 
 function seatIsOccupied(seatNumber, seating) {
   let result = false
