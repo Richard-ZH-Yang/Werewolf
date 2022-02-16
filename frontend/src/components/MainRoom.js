@@ -12,6 +12,7 @@ import PropTypes from 'prop-types'
 export default function MainRoom() {
   const { id } = useParams()
   const url = `http://localhost:4567/rooms/${id}`
+  const leaderBoardUrl = 'http://localhost:4567/players'
 
   const [error, setError] = useState('')
   const [currentSeat, setCurrentSeat] = useState(0)
@@ -19,6 +20,7 @@ export default function MainRoom() {
   const [seating, setSeating] = useState([])
   const [showIdentity, setShowIdentity] = useState(false)
   const [showLeaderBoard, setShowLeaderBoard] = useState(false)
+  const [leaderBoard, setLeaderBoard] = useState([])
 
   const { currentUser, logout } = useAuth()
   const navigate = useNavigate()
@@ -39,6 +41,32 @@ export default function MainRoom() {
     setLoading(false)
   }, [url])
 
+  const getLeaderBoard = useCallback(async () => {
+    const response = await fetch(leaderBoardUrl)
+    const currentPlayers = await response.json()
+
+    currentPlayers.sort((a, b) => {
+      return b.totalWins - a.totalWins || a.name - b.name
+    })
+
+    let result = []
+    currentPlayers.forEach((player) => {
+      result.push({
+        id: player.id,
+        name: player.name,
+        totalWins: player.totalWins,
+        wolfWins: player.wolfWins,
+        humanWins: player.totalWins - player.wolfWins,
+      })
+    })
+
+    result.sort((a, b) => {
+      return b.totalWins - a.totalWins || a.name - b.name
+    })
+
+    setLeaderBoard(result)
+  }, [url])
+
   const displayError = (message) => {
     setError(message)
     setTimeout(() => {
@@ -49,6 +77,10 @@ export default function MainRoom() {
   useEffect(() => {
     getRoom()
   }, [url, getRoom])
+
+  useEffect(() => {
+    getLeaderBoard()
+  }, [url, getLeaderBoard])
 
   async function handleLogout() {
     setError('')
@@ -82,21 +114,19 @@ export default function MainRoom() {
         targetSeat: seatNumber,
       }
 
-      const res = await fetch('http://localhost:4567/seat', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify(plan),
-      })
+      // const res = await fetch('http://localhost:4567/seat', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-type': 'application/json',
+      //   },
+      //   body: JSON.stringify(plan),
+      // })
 
-      if (res.status === 404) {
-        // ERROR
-      } else {
-        // success
-        setCurrentSeat(seatNumber)
-        handleRefresh()
-      }
+      // if (res.status === 404) {
+      // } else {
+      setCurrentSeat(seatNumber)
+      handleRefresh()
+      // }
     }
   }
 
@@ -117,6 +147,7 @@ export default function MainRoom() {
   }
 
   function handleViewLeaderBoard() {
+    getLeaderBoard()
     setShowLeaderBoard(true)
   }
 
@@ -199,6 +230,7 @@ export default function MainRoom() {
           <LeaderBoard
             show={showLeaderBoard}
             onHide={handleCloseLeaderBoard}
+            leaderBoard={leaderBoard}
           />
         </div>
       )}

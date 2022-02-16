@@ -1,38 +1,38 @@
-import React, { useState } from 'react'
-import { Button, Modal } from 'react-bootstrap'
+import React, { useState, useCallback, useEffect } from 'react'
+import { Button, Modal, Table } from 'react-bootstrap'
 
-export default function LeaderBoard({ show, onHide }) {
-
-  const url = `http://localhost:4321/api/players`
-
-  const [players, setPlayers] = useState([])
-  const [loading, setLoading] = useState(true)
-
-   const getLeaderBoard = useCallback(async () => {
-     const response = await fetch(url)
-     const currentPlayers = await response.json()
-
-     // sort the players in descending order of the totalWins
-     currentPlayers.sort((a, b) => {
-       return a.totalWins - b.totalWins
-     })
-
-     currentPlayers.reverse()
-
-     setPlayers(currentPlayers)
-     setLoading(false)
-   }, [url])
-
-     useEffect(() => {
-       getLeaderBoard()
-     }, [getLeaderBoard])
-
+export default function LeaderBoard({ show, onHide, leaderBoard }) {
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title>Leader Board</Modal.Title>
       </Modal.Header>
-      <Modal.Body>Hello</Modal.Body>
+      <Modal.Body>
+        <Table responsive>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Total Wins</th>
+              <th>Human Wins</th>
+              <th>Wolf Wins</th>
+            </tr>
+          </thead>
+          <tbody>
+            {leaderBoard.map((player, index) => {
+              return (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{player.name}</td>
+                  <td>{player.totalWins}</td>
+                  <td>{player.humanWins}</td>
+                  <td>{player.wolfWins}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </Table>
+      </Modal.Body>
       <Modal.Footer>
         <Button variant='secondary' onClick={onHide}>
           Close

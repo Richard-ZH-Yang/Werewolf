@@ -55,9 +55,9 @@ export default function SearchRoom() {
       <Form onSubmit={handleSubmit}>
         <Form.Group className='mb-3'>
           <h1 className='text-center mb-4'>Search Room</h1>
-          <h4 className='text-center mb-4'>
+          {/* <h4 className='text-center mb-4'>
             {currentUser.email} : {currentUser.displayName}
-          </h4>
+          </h4> */}
           <Form.Label>Please enter the room number:</Form.Label>
           <Form.Control
             type='number'
