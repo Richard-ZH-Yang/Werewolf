@@ -9,19 +9,34 @@ const getPlayers = asyncHandler(async (req, res) => {
   res.status(200).json(players)
 })
 
+
+// @desc   get player
+// @route  GET /api/players/:id
+// @access Private
+const getPlayer = asyncHandler(async (req, res) => {
+  const player = await Player.findOne({ id: req.params.id })
+  res.status(200).json(player)
+})
+
+
 // @desc   update player
 // @route  PUT /api/players/:id
 // @access Private
 const updatePlayer = asyncHandler(async (req, res) => {
-  const player = await Player.findById(req.params.id)
+  const player = await Player.findOne({ id: req.params.id })
 
   if (!player) {
     res.status(404)
-    throw new Error('Player not found')
+    throw new Error(`Player with id ${req.params.id} not found`)
+  }
+
+  if (!isTotalWinsValid(req.body.playerInfo)) {
+    res.status(400)
+    throw new Error('The total wins does not match up')
   }
 
   const updatedPlayer = await Player.findByIdAndUpdate(
-    req.params.id,
+    player._id,
     req.body.playerInfo,
     {
       new: true,
@@ -30,6 +45,7 @@ const updatePlayer = asyncHandler(async (req, res) => {
 
   res.status(200).json(updatedPlayer)
 })
+
 
 // @desc   create player
 // @route  POST /api/players
@@ -53,22 +69,13 @@ const createPlayer = asyncHandler(async (req, res) => {
     totalWins,
   } = req.body.playerInfo
 
-  const total =
-    wolfWins +
-    civilianWins +
-    prophetWins +
-    witchWins +
-    hunterWins +
-    idiotWins +
-    guardianWins
-
-  const imaginaryPlayer = await Player.findOne({id: id})
+  const imaginaryPlayer = await Player.findOne({ id: id })
   if (imaginaryPlayer) {
     res.status(404)
     throw new Error('That player with the same id (email) has been registered')
   }
 
-  if (total !== totalWins) {
+  if (!isTotalWinsValid(req.body.playerInfo)) {
     res.status(400)
     throw new Error('The total wins does not match up')
   }
@@ -89,11 +96,11 @@ const createPlayer = asyncHandler(async (req, res) => {
   res.status(200).json(player)
 })
 
+
 // @desc   delete player
 // @route  DELETE /api/players/:id
 // @access Private
 const deletePlayer = asyncHandler(async (req, res) => {
-
   const player = await Player.findOne({ id: req.params.id })
 
   if (!player) {
@@ -104,11 +111,28 @@ const deletePlayer = asyncHandler(async (req, res) => {
   await player.remove()
 
   res.status(200).json({ id: req.params.id })
-
 })
+
+
+// REQUIRES: there are 7 characters in the playerInfo, namely wolf, civilian, prophet, witch, hunter, idiot, guardian
+// EFFECTS: check if the total wins match the wins from other characters
+function isTotalWinsValid(playerInfo) {
+  const total =
+    playerInfo.wolfWins +
+    playerInfo.civilianWins +
+    playerInfo.prophetWins +
+    playerInfo.witchWins +
+    playerInfo.hunterWins +
+    playerInfo.idiotWins +
+    playerInfo.guardianWins
+
+  return total === playerInfo.totalWins ? true : false
+}
+
 
 module.exports = {
   getPlayers,
+  getPlayer,
   updatePlayer,
   createPlayer,
   deletePlayer,
