@@ -1,38 +1,38 @@
-import React, { useState } from 'react'
-import { Button, Modal } from 'react-bootstrap'
+import React, { useState, useCallback, useEffect } from 'react'
+import { Button, Modal, ListGroup, Badge } from 'react-bootstrap'
 
-export default function LeaderBoard({ show, onHide }) {
+export default function LeaderBoard({ show, onHide, leaderBoard }) {
 
-  const url = `http://localhost:4321/api/players`
+  // const [players,setPlayers] = useState([])
 
-  const [players, setPlayers] = useState([])
-  const [loading, setLoading] = useState(true)
+  // useEffect(()=> {
+  //   setPlayers(leaderBoard)
+  // }, [players])
 
-   const getLeaderBoard = useCallback(async () => {
-     const response = await fetch(url)
-     const currentPlayers = await response.json()
-
-     // sort the players in descending order of the totalWins
-     currentPlayers.sort((a, b) => {
-       return a.totalWins - b.totalWins
-     })
-
-     currentPlayers.reverse()
-
-     setPlayers(currentPlayers)
-     setLoading(false)
-   }, [url])
-
-     useEffect(() => {
-       getLeaderBoard()
-     }, [getLeaderBoard])
-
+  // console.log(leaderBoard)
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
         <Modal.Title>Leader Board</Modal.Title>
       </Modal.Header>
-      <Modal.Body>Hello</Modal.Body>
+      <Modal.Body>
+        <ListGroup as="ol" numbered>
+        {
+          leaderBoard.map((player) => {
+  return (
+      <ListGroup.Item as='li' key={player.id}>
+      <div className="fw-bold">{player.name}</div>
+            <Badge variant='primary' pill>
+        {player.totalWins}
+      </Badge>
+      </ListGroup.Item>
+
+  )
+
+          })
+        }
+        </ListGroup>
+      </Modal.Body>
       <Modal.Footer>
         <Button variant='secondary' onClick={onHide}>
           Close
