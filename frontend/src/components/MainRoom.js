@@ -3,11 +3,11 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Card, Button, Alert, Row, Col, Container } from 'react-bootstrap'
 import { useAuth, logout } from '../contexts/AuthContext'
 import ShowIdentity from './ShowIdentity'
+import LeaderBoard from './LeaderBoard'
 // import { useFetch } from './useFetch'
 // import Player from './Player'
 import uuid from 'react-uuid'
 import PropTypes from 'prop-types'
-import { LeaderBoard } from './LeaderBoard'
 
 export default function MainRoom() {
   const { id } = useParams()
@@ -199,7 +199,6 @@ export default function MainRoom() {
           <LeaderBoard
             show={showLeaderBoard}
             onHide={handleCloseLeaderBoard}
-            player={currentSeat === 0 ? {} : seating[currentSeat - 1]}
           />
         </div>
       )}
