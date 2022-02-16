@@ -13,7 +13,18 @@ const getPlayers = asyncHandler(async (req, res) => {
 // @route  PUT /api/players/:id
 // @access Private
 const updatePlayer = asyncHandler(async (req, res) => {
-  res.status(200).json({ result: `update player ${req.params.id}` })
+  const player = await Player.findById(req.params.id)
+
+  if (!player) {
+    res.status(404)
+    throw new Error('Player not found')
+  }
+
+  const updatedPlayer = await Player.findByIdAndUpdate(req.params.id, req.body.playerInfo, {
+    new: true,
+  })
+
+  res.status(200).json(updatedPlayer)
 })
 
 // @desc   create player
