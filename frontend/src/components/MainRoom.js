@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Card, Button, Alert, Row, Col, Container } from 'react-bootstrap'
 import { useAuth, logout } from '../contexts/AuthContext'
 import ShowIdentity from './ShowIdentity'
+import LeaderBoard from './LeaderBoard'
 // import { useFetch } from './useFetch'
 // import Player from './Player'
 import uuid from 'react-uuid'
@@ -17,6 +18,7 @@ export default function MainRoom() {
   const [loading, setLoading] = useState(true)
   const [seating, setSeating] = useState([])
   const [showIdentity, setShowIdentity] = useState(false)
+  const [showLeaderBoard, setShowLeaderBoard] = useState(false)
 
   const { currentUser, logout } = useAuth()
   const navigate = useNavigate()
@@ -114,6 +116,14 @@ export default function MainRoom() {
     }
   }
 
+  function handleViewLeaderBoard() {
+    setShowLeaderBoard(true)
+  }
+
+  function handleCloseLeaderBoard() {
+    setShowLeaderBoard(false)
+  }
+
   return (
     <>
       {loading ? (
@@ -168,6 +178,13 @@ export default function MainRoom() {
           <Button
             disabled={loading}
             className='btn text-center w-100 mt-2'
+            onClick={handleViewLeaderBoard}
+          >
+            Leader Board
+          </Button>
+          <Button
+            disabled={loading}
+            className='btn text-center w-100 mt-2'
             onClick={handleLogout}
           >
             Log out
@@ -177,6 +194,11 @@ export default function MainRoom() {
             show={showIdentity}
             onHide={handleCloseViewIdentity}
             player={currentSeat === 0 ? {} : seating[currentSeat - 1]}
+          />
+
+          <LeaderBoard
+            show={showLeaderBoard}
+            onHide={handleCloseLeaderBoard}
           />
         </div>
       )}
