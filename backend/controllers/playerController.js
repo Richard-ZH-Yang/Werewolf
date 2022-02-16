@@ -60,8 +60,13 @@ const createPlayer = asyncHandler(async (req, res) => {
     witchWins +
     hunterWins +
     idiotWins +
-    guardianWins +
-    totalWins
+    guardianWins
+
+  const imaginaryPlayer = await Player.findOne({id: id})
+  if (imaginaryPlayer) {
+    res.status(404)
+    throw new Error('That player with the same id (email) has been registered')
+  }
 
   if (total !== totalWins) {
     res.status(400)
@@ -85,19 +90,21 @@ const createPlayer = asyncHandler(async (req, res) => {
 })
 
 // @desc   delete player
-// @route  DELETE /api/player/:id
+// @route  DELETE /api/players/:id
 // @access Private
 const deletePlayer = asyncHandler(async (req, res) => {
-  const player = await Player.findById(req.params.id)
+
+  const player = await Player.findOne({ id: req.params.id })
 
   if (!player) {
     res.status(404)
-    throw new Error('Player not found')
+    throw new Error(`Player with id ${req.params.id} not found`)
   }
 
   await player.remove()
 
   res.status(200).json({ id: req.params.id })
+
 })
 
 module.exports = {
