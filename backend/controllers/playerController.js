@@ -20,18 +20,34 @@ const updatePlayer = asyncHandler(async (req, res) => {
 // @route  POST /api/players
 // @access Private
 const createPlayer = asyncHandler(async (req, res) => {
-    if (!req.body.id || !req.body.name) {
+    if (!req.body.playerInfo) {
       res.status(400)
-      throw new Error('Please include an id or name for the player')
+      throw new Error('Please include the playerInfo')
+    }
+
+    const {id, name, wolfWins, civilianWins, prophetWins, witchWins, hunterWins, idiotWins, guardianWins, totalWins} = req.body.playerInfo
+
+    const total = wolfWins + civilianWins + prophetWins + witchWins + hunterWins + idiotWins + guardianWins + totalWins
+
+    if (total !== totalWins) {
+      res.status(400)
+      throw new Error('The total wins does not match up')
     }
 
     const player = await Player.create({
-      id: req.body.id,
-      name: req.user.name,
-      
+      id: id,
+      name: name,
+      wolfWins: wolfWins,
+      civilianWins: civilianWins,
+      prophetWins: prophetWins,
+      witchWins: witchWins,
+      hunterWins: hunterWins,
+      idiotWins: idiotWins,
+      guardianWins: guardianWins,
+      totalWins: totalWins
     })
 
-    res.status(200).json(goal)
+    res.status(200).json(player)
 })
 
 // @desc   delete player
