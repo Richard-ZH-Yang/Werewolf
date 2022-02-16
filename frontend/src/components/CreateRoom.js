@@ -21,6 +21,7 @@ const CreateRoom = ({ displayError }) => {
     e.preventDefault()
     const newRoom = {
       judgeId: currentUser.email,
+      judgeName: currentUser.displayName,
       wolf: parseInt(wolfRef.current.value),
       civilian: parseInt(civilianRef.current.value),
       prophet: prophetRef.current.checked ? 1 : 0,
