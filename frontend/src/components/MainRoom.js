@@ -45,11 +45,26 @@ export default function MainRoom() {
     const response = await fetch(leaderBoardUrl)
     const currentPlayers = await response.json()
 
-          currentPlayers.sort((a, b) => {
-           return b.totalWins - a.totalWins || a.name - b.name
-         })
+    currentPlayers.sort((a, b) => {
+      return b.totalWins - a.totalWins || a.name - b.name
+    })
 
-          setLeaderBoard(currentPlayers)
+    let result = []
+    currentPlayers.forEach((player) => {
+      result.push({
+        id: player.id,
+        name: player.name,
+        totalWins: player.totalWins,
+        wolfWins: player.wolfWins,
+        humanWins: player.totalWins - player.wolfWins,
+      })
+    })
+
+    result.sort((a, b) => {
+      return b.totalWins - a.totalWins || a.name - b.name
+    })
+
+    setLeaderBoard(result)
   }, [url])
 
   const displayError = (message) => {
@@ -63,9 +78,9 @@ export default function MainRoom() {
     getRoom()
   }, [url, getRoom])
 
-    useEffect(() => {
-      getLeaderBoard()
-    }, [url, getLeaderBoard])
+  useEffect(() => {
+    getLeaderBoard()
+  }, [url, getLeaderBoard])
 
   async function handleLogout() {
     setError('')
@@ -109,8 +124,8 @@ export default function MainRoom() {
 
       // if (res.status === 404) {
       // } else {
-        setCurrentSeat(seatNumber)
-        handleRefresh()
+      setCurrentSeat(seatNumber)
+      handleRefresh()
       // }
     }
   }
@@ -131,13 +146,12 @@ export default function MainRoom() {
     }
   }
 
-   function handleViewLeaderBoard() {
+  function handleViewLeaderBoard() {
     getLeaderBoard()
     setShowLeaderBoard(true)
   }
 
   function handleCloseLeaderBoard() {
-
     setShowLeaderBoard(false)
   }
 
