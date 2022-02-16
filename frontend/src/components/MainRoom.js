@@ -7,6 +7,7 @@ import ShowIdentity from './ShowIdentity'
 // import Player from './Player'
 import uuid from 'react-uuid'
 import PropTypes from 'prop-types'
+import { LeaderBoard } from './LeaderBoard'
 
 export default function MainRoom() {
   const { id } = useParams()
@@ -17,6 +18,7 @@ export default function MainRoom() {
   const [loading, setLoading] = useState(true)
   const [seating, setSeating] = useState([])
   const [showIdentity, setShowIdentity] = useState(false)
+  const [showLeaderBoard, setShowLeaderBoard] = useState(false)
 
   const { currentUser, logout } = useAuth()
   const navigate = useNavigate()
@@ -114,6 +116,14 @@ export default function MainRoom() {
     }
   }
 
+  function handleViewLeaderBoard() {
+    setShowLeaderBoard(true)
+  }
+
+  function handleCloseLeaderBoard() {
+    setShowLeaderBoard(false)
+  }
+
   return (
     <>
       {loading ? (
@@ -168,6 +178,13 @@ export default function MainRoom() {
           <Button
             disabled={loading}
             className='btn text-center w-100 mt-2'
+            onClick={handleViewLeaderBoard}
+          >
+            Leader Board
+          </Button>
+          <Button
+            disabled={loading}
+            className='btn text-center w-100 mt-2'
             onClick={handleLogout}
           >
             Log out
@@ -176,6 +193,12 @@ export default function MainRoom() {
           <ShowIdentity
             show={showIdentity}
             onHide={handleCloseViewIdentity}
+            player={currentSeat === 0 ? {} : seating[currentSeat - 1]}
+          />
+
+          <LeaderBoard
+            show={showLeaderBoard}
+            onHide={handleCloseLeaderBoard}
             player={currentSeat === 0 ? {} : seating[currentSeat - 1]}
           />
         </div>
