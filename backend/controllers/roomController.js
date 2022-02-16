@@ -26,6 +26,13 @@ const createRoom = asyncHandler(async (req, res) => {
 
 })
 
+// @desc   delete room
+// @route  DELETE /api/rooms/:id
+// @access Private
+const deleteRoom = asyncHandler(async (req, res) => {
+  res.status(200).json({ result: `delete a room` })
+})
+
 module.exports = {
- getRoom, updateRoom, createRoom,
+ getRoom, updateRoom, createRoom, deleteRoom,
 }

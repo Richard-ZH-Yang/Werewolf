@@ -11,35 +11,35 @@ const playerSchema = mongoose.Schema(
       required: [true, 'Please add a name for this player'],
     },
     wolfWins: {
-      type: number,
+      type: Number,
       required: [true, 'Please add wolfWins for this player'],
     },
     civilianWins: {
-      type: number,
+      type: Number,
       required: [true, 'Please add civilianWins for this player'],
     },
     prophetWins: {
-      type: number,
+      type: Number,
       required: [true, 'Please add prophetWins for this player'],
     },
     witchWins: {
-      type: number,
+      type: Number,
       required: [true, 'Please add witchWins for this player'],
     },
     hunterWins: {
-      type: number,
+      type: Number,
       required: [true, 'Please add hunterWins for this player'],
     },
     idiotWins: {
-      type: number,
+      type: Number,
       required: [true, 'Please add idiotWins for this player'],
     },
     guardianWins: {
-      type: number,
+      type: Number,
       required: [true, 'Please add guardianWins for this player'],
     },
     totalWins: {
-      type: number,
+      type: Number,
       required: [true, 'Please add totalWins for this player'],
     },
   },
