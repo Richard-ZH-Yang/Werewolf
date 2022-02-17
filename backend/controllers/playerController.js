@@ -1,5 +1,7 @@
+const {isTotalWinsValid} = require('../utilities/playerUtil')
 const asyncHandler = require('express-async-handler')
 const Player = require('../models/playerModel')
+
 
 // @desc   get players
 // @route  GET /api/players
@@ -9,19 +11,34 @@ const getPlayers = asyncHandler(async (req, res) => {
   res.status(200).json(players)
 })
 
+
+// @desc   get player
+// @route  GET /api/players/:id
+// @access Private
+const getPlayer = asyncHandler(async (req, res) => {
+  const player = await Player.findOne({ id: req.params.id })
+  res.status(200).json(player)
+})
+
+
 // @desc   update player
 // @route  PUT /api/players/:id
 // @access Private
 const updatePlayer = asyncHandler(async (req, res) => {
-  const player = await Player.findById(req.params.id)
+  const player = await Player.findOne({ id: req.params.id })
 
   if (!player) {
     res.status(404)
-    throw new Error('Player not found')
+    throw new Error(`Player with id ${req.params.id} not found`)
+  }
+
+  if (!isTotalWinsValid(req.body.playerInfo)) {
+    res.status(400)
+    throw new Error('The total wins does not match up')
   }
 
   const updatedPlayer = await Player.findByIdAndUpdate(
-    req.params.id,
+    player._id,
     req.body.playerInfo,
     {
       new: true,
@@ -30,6 +47,7 @@ const updatePlayer = asyncHandler(async (req, res) => {
 
   res.status(200).json(updatedPlayer)
 })
+
 
 // @desc   create player
 // @route  POST /api/players
@@ -53,17 +71,13 @@ const createPlayer = asyncHandler(async (req, res) => {
     totalWins,
   } = req.body.playerInfo
 
-  const total =
-    wolfWins +
-    civilianWins +
-    prophetWins +
-    witchWins +
-    hunterWins +
-    idiotWins +
-    guardianWins +
-    totalWins
+  const imaginaryPlayer = await Player.findOne({ id: id })
+  if (imaginaryPlayer) {
+    res.status(404)
+    throw new Error('That player with the same id (email) has been registered')
+  }
 
-  if (total !== totalWins) {
+  if (!isTotalWinsValid(req.body.playerInfo)) {
     res.status(400)
     throw new Error('The total wins does not match up')
   }
@@ -84,15 +98,16 @@ const createPlayer = asyncHandler(async (req, res) => {
   res.status(200).json(player)
 })
 
+
 // @desc   delete player
-// @route  DELETE /api/player/:id
+// @route  DELETE /api/players/:id
 // @access Private
 const deletePlayer = asyncHandler(async (req, res) => {
-  const player = await Player.findById(req.params.id)
+  const player = await Player.findOne({ id: req.params.id })
 
   if (!player) {
     res.status(404)
-    throw new Error('Player not found')
+    throw new Error(`Player with id ${req.params.id} not found`)
   }
 
   await player.remove()
@@ -100,8 +115,10 @@ const deletePlayer = asyncHandler(async (req, res) => {
   res.status(200).json({ id: req.params.id })
 })
 
+
 module.exports = {
   getPlayers,
+  getPlayer,
   updatePlayer,
   createPlayer,
   deletePlayer,
