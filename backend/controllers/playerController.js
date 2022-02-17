@@ -1,5 +1,7 @@
+const {isTotalWinsValid} = require('../utilities/playerUtil')
 const asyncHandler = require('express-async-handler')
 const Player = require('../models/playerModel')
+
 
 // @desc   get players
 // @route  GET /api/players
@@ -112,22 +114,6 @@ const deletePlayer = asyncHandler(async (req, res) => {
 
   res.status(200).json({ id: req.params.id })
 })
-
-
-// REQUIRES: there are 7 characters in the playerInfo, namely wolf, civilian, prophet, witch, hunter, idiot, guardian
-// EFFECTS: check if the total wins match the wins from other characters
-function isTotalWinsValid(playerInfo) {
-  const total =
-    playerInfo.wolfWins +
-    playerInfo.civilianWins +
-    playerInfo.prophetWins +
-    playerInfo.witchWins +
-    playerInfo.hunterWins +
-    playerInfo.idiotWins +
-    playerInfo.guardianWins
-
-  return total === playerInfo.totalWins ? true : false
-}
 
 
 module.exports = {
