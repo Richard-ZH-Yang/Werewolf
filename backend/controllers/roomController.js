@@ -10,6 +10,22 @@ const getRoom = asyncHandler(async (req, res) => {
   res.status(200).json(room)
 })
 
+// @desc   get rooms
+// @route  GET /api/rooms
+// @access Private
+const getRooms = asyncHandler(async (req, res) => {
+  const rooms = await Room.find()
+  res.status(200).json(rooms)
+})
+
+
+// @desc   update a player's seat
+// @route  PUT /api/rooms/:id/:userId
+// @access Private
+const switchSeat = asyncHandler(async (req, res) => {
+  res.status(200).json({ result: `update room ${req.params.id}` })
+})
+
 // @desc   update room
 // @route  PUT /api/rooms/:id
 // @access Private
@@ -71,7 +87,9 @@ const deleteRoom = asyncHandler(async (req, res) => {
 
 module.exports = {
   getRoom,
+  getRooms,
   updateRoom,
   createRoom,
   deleteRoom,
+  switchSeat,
 }
