@@ -1,10 +1,13 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
+
 
 const roomSchema = mongoose.Schema(
   {
     id: {
       type: Number,
       required: [true, 'Please add an ID for this room'],
+      unique: [true, 'Room id must be unique']
     },
     seats: [
       {
@@ -36,5 +39,7 @@ const roomSchema = mongoose.Schema(
     timestamps: true,
   }
 )
+
+roomSchema.plugin(uniqueValidator)
 
 module.exports = mongoose.model('Room', roomSchema)

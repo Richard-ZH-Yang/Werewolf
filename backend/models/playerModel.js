@@ -1,10 +1,12 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 const playerSchema = mongoose.Schema(
   {
     id: {
       type: String,
       required: [true, 'Please add an ID for this player'],
+      unique: [true, 'Player\s id (email) must be unique'],
     },
     name: {
       type: String,
@@ -47,5 +49,7 @@ const playerSchema = mongoose.Schema(
     timestamps: true,
   }
 )
+
+playerSchema.plugin(uniqueValidator)
 
 module.exports = mongoose.model('Player', playerSchema)
