@@ -1,6 +1,8 @@
 const asyncHandler = require('express-async-handler')
 const Room = require('../models/roomModel')
 const { getFourDigitId, generateSeats, isRoomInfoValid } = require('../utilities/roomUtil')
+// roomId is in the range of [1000, 10000)
+const MAX_NUM_ROOM = 9999 - 1000 + 1
 
 // @desc   get room
 // @route  GET /api/rooms/:id
@@ -52,6 +54,11 @@ const createRoom = asyncHandler(async (req, res) => {
   const seats = generateSeats(roomInfo)
 
   const existingIds = await Room.find().select('id')
+
+  if (existingIds.length === MAX_NUM_ROOM) {
+    res.status(404)
+    throw new Error('All rooms are occupied')
+  }
 
   let roomId = await getFourDigitId(existingIds)
 
