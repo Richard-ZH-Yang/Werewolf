@@ -26,11 +26,11 @@ function generateSeats(roomInfo) {
 }
 
 // EFFECTS: return a random 4 digit room id that does not exist in the database yet
-async function getFourDigitId(Room) {
+async function getFourDigitId(existingIds) {
   let roomId = Math.floor(1000 + Math.random() * 9000)
   let idNotValid = true
   while (idNotValid) {
-    if (!(await Room.find({ id: roomId }))) {
+    if (!existingIds.includes(roomId)) {
       idNotValid = false
     } else {
       roomId = Math.floor(1000 + Math.random() * 9000)

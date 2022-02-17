@@ -51,19 +51,14 @@ const createRoom = asyncHandler(async (req, res) => {
 
   const seats = generateSeats(roomInfo)
 
-  let roomId = await getFourDigitId(Room)
+  const existingIds = await Room.find().select('id')
+
+  let roomId = await getFourDigitId(existingIds)
 
   const room = await Room.create({
     id: roomId,
-    seats: seats
+    seats: seats,
   })
-
-  // a room with same id was generate simultaneously by others
-  if (Room.find({id: roomId}).length !== 1) {
-    await room.remove()
-    res.status(404)
-    throw new Error('Failed to create a room, the id is already taken')
-  }
 
   res.status(200).json(room)
 })
