@@ -27,7 +27,7 @@ const createRoom = asyncHandler(async (req, res) => {
   }
 
   const roomInfo = req.body.roomInfo
-  
+
   if (!isRoomInfoValid(roomInfo)) {
     res.status(400)
     throw new Error('The room information is not valid')
@@ -39,6 +39,7 @@ const createRoom = asyncHandler(async (req, res) => {
 
   const room = await Room.create({
     id: roomId,
+    seats: seats
   })
 
   // a room with same id was generate simultaneously by others
