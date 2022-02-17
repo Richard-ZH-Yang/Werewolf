@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const Room = require('../models/roomModel')
-const { getFourDigitId } = require('../utilities/roomUtil')
+const { getFourDigitId, generateSeats, isRoomInfoValid } = require('../utilities/roomUtil')
 
 // @desc   get room
 // @route  GET /api/rooms/:id
@@ -26,11 +26,27 @@ const createRoom = asyncHandler(async (req, res) => {
     throw new Error('Please include the information for this room')
   }
 
+  const roomInfo = req.body.roomInfo
+  
+  if (!isRoomInfoValid(roomInfo)) {
+    res.status(400)
+    throw new Error('The room information is not valid')
+  }
+
+  const seats = generateSeats(roomInfo)
+
   let roomId = await getFourDigitId(Room)
 
   const room = await Room.create({
     id: roomId,
   })
+
+  // a room with same id was generate simultaneously by others
+  if (Room.find({id: roomId}).length !== 1) {
+    await room.remove()
+    res.status(404)
+    throw new Error('Failed to create a room, the id is already taken')
+  }
 
   res.status(200).json(room)
 })
