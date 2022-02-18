@@ -39,6 +39,13 @@ async function getFourDigitId(existingIds) {
   return roomId
 }
 
+function getRoomAfterSwitch(room, switchInfo) {
+ const temp = room.seats[switchInfo.to - 1].player
+ room.seats[switchInfo.to - 1].player = room.seats[switchInfo.from - 1].player
+ room.seats[switchInfo.from - 1].player = temp
+ return room
+}
+
 // REQUIRES: there are 7 characters in the roomInfo, namely wolf, civilian, prophet, witch, hunter, idiot, guardian
 // EFFECTS: return false if judgeId or judgeName is empty, or any character number is smaller than 0. Otherwise is valid
 function isRoomInfoValid(roomInfo) {
@@ -120,4 +127,5 @@ module.exports = {
   generateSeats,
   isRoomInfoValid,
   isSwitchInfoValid,
+  getRoomAfterSwitch,
 }

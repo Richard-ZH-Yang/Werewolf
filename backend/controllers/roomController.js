@@ -1,6 +1,12 @@
 const asyncHandler = require('express-async-handler')
 const Room = require('../models/roomModel')
-const { getFourDigitId, generateSeats, isRoomInfoValid, isSwitchInfoValid } = require('../utilities/roomUtil')
+const {
+  getFourDigitId,
+  generateSeats,
+  isRoomInfoValid,
+  isSwitchInfoValid,
+  getRoomAfterSwitch,
+} = require('../utilities/roomUtil')
 // roomId is in the range of [1000, 10000)
 const MAX_NUM_ROOM = 9999 - 1000 + 1
 
@@ -22,15 +28,14 @@ const getRooms = asyncHandler(async (req, res) => {
 
 
 // @desc   update a player's seat
-// @route  PUT /api/rooms/:id/:userId
+// @route  PUT /api/rooms/:id/:from/:to
 // @access Private
 const switchSeat = asyncHandler(async (req, res) => {
-  if (!req.body.switchInfo) {
-    res.status(400)
-    throw new Error ('Please include a switchInfo for this switch seats requests')
-  }
 
-  const switchInfo = req.body.switchInfo
+  const switchInfo = {
+    from: req.params.from,
+    to: req.params.to
+  }
   const room = await Room.findOne({id : req.params.id})
 
   if (!isSwitchInfoValid(switchInfo, room.seats.length)) {
@@ -48,8 +53,13 @@ const switchSeat = asyncHandler(async (req, res) => {
     throw new Error ('Someone has already sit there, please refresh the page and try another seat')
   }
 
+  const newRoom = getRoomAfterSwitch(room, switchInfo)
 
-  res.status(200).json({ result: `update room ${req.params.id}` })
+  const updatedRoom = await Room.findByIdAndUpdate(room._id, newRoom, {
+    new: true,
+  })
+
+  res.status(200).json( updatedRoom )
 })
 
 // @desc   update room
