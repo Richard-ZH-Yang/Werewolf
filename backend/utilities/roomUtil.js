@@ -59,6 +59,23 @@ function isRoomInfoValid(roomInfo) {
   }
 }
 
+// EFFECTS: check if the switchInfo has from and to element, and if the to and from is in range of [1, numSeatsIncludingJudge]
+function isSwitchInfoValid(switchInfo, numSeatsIncludingJudge) {
+  if (!switchInfo.from || !switchInfo.to) {
+    return false
+  }
+
+  if (switchInfo.from < 1 || switchInfo.from > numSeatsIncludingJudge) {
+    return false
+  }
+
+  if (switchInfo.to < 1 || switchInfo.to > numSeatsIncludingJudge) {
+    return false
+  }
+
+  return true
+}
+
 // REQUIRES: there are 7 characters in the roomInfo, namely wolf, civilian, prophet, witch, hunter, idiot, guardian
 // EFFECTS: get how many players including judge are in this room
 function getNumPlayer(roomInfo) {
@@ -89,7 +106,6 @@ function getCharactersPool(roomInfo) {
   return result
 }
 
-
 // EFFECTS: get an array that has the same identity string, with recurrences of the repeat number
 function getNewPoolElements(identity, repeat) {
   const newElements = []
@@ -103,4 +119,5 @@ module.exports = {
   getFourDigitId,
   generateSeats,
   isRoomInfoValid,
+  isSwitchInfoValid,
 }
