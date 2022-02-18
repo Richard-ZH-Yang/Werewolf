@@ -26,17 +26,24 @@ function generateSeats(roomInfo) {
 }
 
 // EFFECTS: return a random 4 digit room id that does not exist in the database yet
-async function getFourDigitId(Room) {
+async function getFourDigitId(existingIds) {
   let roomId = Math.floor(1000 + Math.random() * 9000)
   let idNotValid = true
   while (idNotValid) {
-    if (!(await Room.find({ id: roomId }))) {
+    if (!existingIds.includes(roomId)) {
       idNotValid = false
     } else {
       roomId = Math.floor(1000 + Math.random() * 9000)
     }
   }
   return roomId
+}
+
+function getRoomAfterSwitch(room, switchInfo) {
+ const temp = room.seats[switchInfo.to - 1].player
+ room.seats[switchInfo.to - 1].player = room.seats[switchInfo.from - 1].player
+ room.seats[switchInfo.from - 1].player = temp
+ return room
 }
 
 // REQUIRES: there are 7 characters in the roomInfo, namely wolf, civilian, prophet, witch, hunter, idiot, guardian
@@ -57,6 +64,23 @@ function isRoomInfoValid(roomInfo) {
   } else {
     return true
   }
+}
+
+// EFFECTS: check if the switchInfo has from and to element, and if the to and from is in range of [1, numSeatsIncludingJudge]
+function isSwitchInfoValid(switchInfo, numSeatsIncludingJudge) {
+  if (!switchInfo.from || !switchInfo.to) {
+    return false
+  }
+
+  if (switchInfo.from < 1 || switchInfo.from > numSeatsIncludingJudge) {
+    return false
+  }
+
+  if (switchInfo.to < 1 || switchInfo.to > numSeatsIncludingJudge) {
+    return false
+  }
+
+  return true
 }
 
 // REQUIRES: there are 7 characters in the roomInfo, namely wolf, civilian, prophet, witch, hunter, idiot, guardian
@@ -89,7 +113,6 @@ function getCharactersPool(roomInfo) {
   return result
 }
 
-
 // EFFECTS: get an array that has the same identity string, with recurrences of the repeat number
 function getNewPoolElements(identity, repeat) {
   const newElements = []
@@ -103,4 +126,6 @@ module.exports = {
   getFourDigitId,
   generateSeats,
   isRoomInfoValid,
+  isSwitchInfoValid,
+  getRoomAfterSwitch,
 }

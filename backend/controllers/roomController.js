@@ -1,6 +1,14 @@
 const asyncHandler = require('express-async-handler')
 const Room = require('../models/roomModel')
-const { getFourDigitId, generateSeats, isRoomInfoValid } = require('../utilities/roomUtil')
+const {
+  getFourDigitId,
+  generateSeats,
+  isRoomInfoValid,
+  isSwitchInfoValid,
+  getRoomAfterSwitch,
+} = require('../utilities/roomUtil')
+// roomId is in the range of [1000, 10000)
+const MAX_NUM_ROOM = 9999 - 1000 + 1
 
 // @desc   get room
 // @route  GET /api/rooms/:id
@@ -8,6 +16,50 @@ const { getFourDigitId, generateSeats, isRoomInfoValid } = require('../utilities
 const getRoom = asyncHandler(async (req, res) => {
   const room = await Room.findOne({ id: req.params.id })
   res.status(200).json(room)
+})
+
+// @desc   get rooms
+// @route  GET /api/rooms
+// @access Private
+const getRooms = asyncHandler(async (req, res) => {
+  const rooms = await Room.find()
+  res.status(200).json(rooms)
+})
+
+
+// @desc   update a player's seat
+// @route  PUT /api/rooms/:id/:from/:to
+// @access Private
+const switchSeat = asyncHandler(async (req, res) => {
+
+  const switchInfo = {
+    from: req.params.from,
+    to: req.params.to
+  }
+  const room = await Room.findOne({id : req.params.id})
+
+  if (!isSwitchInfoValid(switchInfo, room.seats.length)) {
+    res.status(400)
+    throw new Error('The switchInfo is not valid')
+  }
+
+  if (!room) {
+    res.status(404)
+    throw new Error (`Room with id ${req.params.id} not found`)
+  }
+
+  if (!room.seats[switchInfo.to - 1]) {
+    res.status(404)
+    throw new Error ('Someone has already sit there, please refresh the page and try another seat')
+  }
+
+  const newRoom = getRoomAfterSwitch(room, switchInfo)
+
+  const updatedRoom = await Room.findByIdAndUpdate(room._id, newRoom, {
+    new: true,
+  })
+
+  res.status(200).json( updatedRoom )
 })
 
 // @desc   update room
@@ -35,19 +87,19 @@ const createRoom = asyncHandler(async (req, res) => {
 
   const seats = generateSeats(roomInfo)
 
-  let roomId = await getFourDigitId(Room)
+  const existingIds = await Room.find().select('id')
+
+  if (existingIds.length === MAX_NUM_ROOM) {
+    res.status(404)
+    throw new Error('All rooms are occupied')
+  }
+
+  let roomId = await getFourDigitId(existingIds)
 
   const room = await Room.create({
     id: roomId,
-    seats: seats
+    seats: seats,
   })
-
-  // a room with same id was generate simultaneously by others
-  if (Room.find({id: roomId}).length !== 1) {
-    await room.remove()
-    res.status(404)
-    throw new Error('Failed to create a room, the id is already taken')
-  }
 
   res.status(200).json(room)
 })
@@ -71,7 +123,9 @@ const deleteRoom = asyncHandler(async (req, res) => {
 
 module.exports = {
   getRoom,
+  getRooms,
   updateRoom,
   createRoom,
   deleteRoom,
+  switchSeat,
 }
