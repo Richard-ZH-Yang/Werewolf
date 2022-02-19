@@ -48,7 +48,7 @@ const switchSeat = asyncHandler(async (req, res) => {
     throw new Error (`Room with id ${req.params.id} not found`)
   }
 
-  if (!room.seats[switchInfo.to - 1]) {
+  if (room.seats[switchInfo.to - 1].player.id) {
     res.status(404)
     throw new Error ('Someone has already sit there, please refresh the page and try another seat')
   }
@@ -66,6 +66,19 @@ const switchSeat = asyncHandler(async (req, res) => {
 // @route  PUT /api/rooms/:id
 // @access Private
 const updateRoom = asyncHandler(async (req, res) => {
+  if (!req.body.roomInfo) {
+    res.status(400)
+    throw new Error('Need to include the roomInfo')
+  }
+
+  const roomInfo = req.body.roomInfo
+
+  if (!isRoomInfoValid(roomInfo)) {
+    res.status(400)
+    throw new Error('The room information is not valid')
+  }
+
+
   res.status(200).json({ result: `update room ${req.params.id}` })
 })
 

@@ -39,11 +39,12 @@ async function getFourDigitId(existingIds) {
   return roomId
 }
 
+// EFFECTS: return a room object that has the seats switched, but the id for that seat does not change
 function getRoomAfterSwitch(room, switchInfo) {
- const temp = room.seats[switchInfo.to - 1].player
- room.seats[switchInfo.to - 1].player = room.seats[switchInfo.from - 1].player
- room.seats[switchInfo.from - 1].player = temp
- return room
+  const temp = room.seats[switchInfo.to - 1].player
+  room.seats[switchInfo.to - 1].player = room.seats[switchInfo.from - 1].player
+  room.seats[switchInfo.from - 1].player = temp
+  return room
 }
 
 // REQUIRES: there are 7 characters in the roomInfo, namely wolf, civilian, prophet, witch, hunter, idiot, guardian
@@ -66,12 +67,8 @@ function isRoomInfoValid(roomInfo) {
   }
 }
 
-// EFFECTS: check if the switchInfo has from and to element, and if the to and from is in range of [1, numSeatsIncludingJudge]
+// EFFECTS: check if the to and from is in range of [1, numSeatsIncludingJudge]
 function isSwitchInfoValid(switchInfo, numSeatsIncludingJudge) {
-  if (!switchInfo.from || !switchInfo.to) {
-    return false
-  }
-
   if (switchInfo.from < 1 || switchInfo.from > numSeatsIncludingJudge) {
     return false
   }
