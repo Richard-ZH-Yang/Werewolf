@@ -6,6 +6,7 @@ const {
   isRoomInfoValid,
   isSwitchInfoValid,
   getRoomAfterSwitch,
+  isUserSeatOnOtherPositions,
 } = require('../utilities/roomUtil')
 // roomId is in the range of [1000, 10000)
 const MAX_NUM_ROOM = 9999 - 1000 + 1
@@ -40,9 +41,6 @@ const switchSeat = asyncHandler(async (req, res) => {
   }
   const room = await Room.findOne({id : req.params.id})
 
-  // TODO: check if other seats in the room have the id present
-
-
   if (!isSwitchInfoValid(switchInfo, room.seats.length)) {
     res.status(400)
     throw new Error('The switchInfo is not valid')
@@ -51,6 +49,11 @@ const switchSeat = asyncHandler(async (req, res) => {
   if (!room) {
     res.status(404)
     throw new Error (`Room with id ${req.params.id} not found`)
+  }
+
+  if(isUserSeatOnOtherPositions(room, switchInfo)) {
+    res.status(400)
+    throw new Error('User has seat on positions other than where they are from')
   }
 
   if (room.seats[switchInfo.to - 1].player.id) {

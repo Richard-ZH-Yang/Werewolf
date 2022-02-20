@@ -39,7 +39,7 @@ async function getFourDigitId(existingIds) {
   return roomId
 }
 
-// REQUIRES: the target seats that switched to have no player
+// REQUIRES: the target seats that switched to have no player, if switchInfo.from is not 0, player with id switchInfo.playerId must be present in switchInfo.from
 // EFFECTS: if the player does not have seat yet, set the seat switched to with the player information. Otherwise switch the seat that player sit on with the seat switched to, but will not switch the identity
 function getRoomAfterSwitch(room, switchInfo) {
   if (switchInfo.from === 0) {
@@ -52,6 +52,18 @@ function getRoomAfterSwitch(room, switchInfo) {
     room.seats[switchInfo.from - 1].player = temp
   }
   return room
+}
+
+// EFFECTS: check if the player has seat on other positions other than the position they switch from
+function isUserSeatOnOtherPositions(room, switchInfo) {
+ let result = false
+ room.seats.forEach((seat)=> {
+  if (seat.player.id === switchInfo.playerId && seat.id !== switchInfo.from) {
+   result = true
+  }
+ })
+ return result
+
 }
 
 // REQUIRES: there are 7 characters in the roomInfo, namely wolf, civilian, prophet, witch, hunter, idiot, guardian
@@ -136,4 +148,5 @@ module.exports = {
   isRoomInfoValid,
   isSwitchInfoValid,
   getRoomAfterSwitch,
+  isUserSeatOnOtherPositions,
 }
