@@ -4,7 +4,7 @@
 ...
 
 ## Technology Used
-We used MERN tech stack for this project. For the backend, we used TypeScript.
+We used **MERN** tech stack for this project. For the fronend, we used React and Bootstrap for styling, and uses firebase for user authentication. For the backend, we used Express.js to develop the controllers and register routes. We used MongoDB Atlas to store all the information and interact with the backend
 
 ## Rules
 A game generally requires 6 to 12 players and a host (commonly called God or Judge). The game is played in alternating phases of "night" and "day". The host is responsible for distributing character identities, handling the player's character skills, and the alternation of stages.
