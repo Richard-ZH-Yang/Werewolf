@@ -28,15 +28,20 @@ const getRooms = asyncHandler(async (req, res) => {
 
 
 // @desc   update a player's seat
-// @route  PUT /api/rooms/:id/:from/:to
+// @route  PUT /api/rooms/:id/:userId
 // @access Private
 const switchSeat = asyncHandler(async (req, res) => {
 
   const switchInfo = {
-    from: req.params.from,
-    to: req.params.to
+    from: req.body.from,
+    to: req.body.to,
+    playerId: req.params.userId,
+    playerName: req.body.name
   }
   const room = await Room.findOne({id : req.params.id})
+
+  // TODO: check if other seats in the room have the id present
+
 
   if (!isSwitchInfoValid(switchInfo, room.seats.length)) {
     res.status(400)

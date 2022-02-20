@@ -39,11 +39,18 @@ async function getFourDigitId(existingIds) {
   return roomId
 }
 
-// EFFECTS: return a room object that has the seats switched, but the id for that seat does not change
+// REQUIRES: the target seats that switched to have no player
+// EFFECTS: if the player does not have seat yet, set the seat switched to with the player information. Otherwise switch the seat that player sit on with the seat switched to, but will not switch the identity
 function getRoomAfterSwitch(room, switchInfo) {
-  const temp = room.seats[switchInfo.to - 1].player
-  room.seats[switchInfo.to - 1].player = room.seats[switchInfo.from - 1].player
-  room.seats[switchInfo.from - 1].player = temp
+  if (switchInfo.from === 0) {
+    room.seats[switchInfo.to - 1].player.id = switchInfo.playerId
+    room.seats[switchInfo.to - 1].player.name = switchInfo.playerName
+  } else {
+    const temp = room.seats[switchInfo.to - 1].player
+    room.seats[switchInfo.to - 1].player =
+      room.seats[switchInfo.from - 1].player
+    room.seats[switchInfo.from - 1].player = temp
+  }
   return room
 }
 
@@ -67,13 +74,17 @@ function isRoomInfoValid(roomInfo) {
   }
 }
 
-// EFFECTS: check if the to and from is in range of [1, numSeatsIncludingJudge]
+// EFFECTS: check if the to is in range of [1, numSeatsIncludingJudge], and if the from is in range of [0, numSeatsIncludingJudge], and there are player name and id for switchInfo
 function isSwitchInfoValid(switchInfo, numSeatsIncludingJudge) {
-  if (switchInfo.from < 1 || switchInfo.from > numSeatsIncludingJudge) {
+  if (switchInfo.from < 0 || switchInfo.from > numSeatsIncludingJudge) {
     return false
   }
 
   if (switchInfo.to < 1 || switchInfo.to > numSeatsIncludingJudge) {
+    return false
+  }
+
+  if (!switchInfo.playerId || !switchInfo.playerName) {
     return false
   }
 
