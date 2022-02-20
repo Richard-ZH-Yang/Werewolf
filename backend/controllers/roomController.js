@@ -74,13 +74,14 @@ const switchSeat = asyncHandler(async (req, res) => {
 // @route  PUT /api/rooms/:id
 // @access Private
 const updateRoom = asyncHandler(async (req, res) => {
-  if (!req.body.roomInfo) {
+  if (!req.body.updateInfo) {
     res.status(400)
-    throw new Error('Need to include the roomInfo')
+    throw new Error('Need to include the updateInfo')
   }
 
-  const roomInfo = req.body.roomInfo
-
+  const updateInfo = req.body.updateInfo
+  const room = await Room.findOne({ id: req.params.id })
+  
   if (!isRoomInfoValid(roomInfo)) {
     res.status(400)
     throw new Error('The room information is not valid')
