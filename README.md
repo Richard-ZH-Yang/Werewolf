@@ -1,14 +1,14 @@
 # Werewolf
 
 ## About
-...
+This game generally requires 6 to 12 players and a host (commonly called God or Judge). The game is played in alternating phases of "night" and "day". The host is responsible for distributing character identities, handling the player's character skills, and the alternation of stages.
+
+And this project provides a platform to play Werewolf in person, with one person as a host to give instructions. It has a room for players to join, and after selecting the seat, player can view their randomly generated roles based the settings from the host. It also able to track the results for each player and provides a leaderboard to provide insight on who is the best player. 
 
 ## Technology Used
-We used **MERN** tech stack for this project. For the fronend, we used React and Bootstrap for styling, and uses firebase for user authentication. For the backend, we used Express.js to develop the controllers and register routes. We used MongoDB Atlas to store all the information and interact with the backend
+We use **MERN** tech stack for this project. For the fronend, we use React and Bootstrap for styling, and use firebase for user authentication. For the backend, we use Express.js to develop the controllers and register routes. We use MongoDB Atlas to store all the information and interact with the backend
 
 ## Rules
-A game generally requires 6 to 12 players and a host (commonly called God or Judge). The game is played in alternating phases of "night" and "day". The host is responsible for distributing character identities, handling the player's character skills, and the alternation of stages.
-
 Each player will be given a character before the game starts. The game characters are mainly divided into two opposing camps: the "human" camp and the "werewolf" camp. There are several civilians and priests in the human camp. They don't know each other's identities. They need to use the abilities of priests and the player's language and expressions to distinguish between humans and werewolves in the village, to vote for exile and to use character skills. Eliminate the werewolves in other ways to win. The werewolf camp has a small number of people and mixes with the human camp to confuse people; they can meet each other every night and kill a player together. The werewolf camp needs to eliminate all civilians or priests to win.
 
 After the end of the night every day, enter the day phase, all surviving players take turns to speak, and after everyone has finished speaking, they vote to exile a player.
