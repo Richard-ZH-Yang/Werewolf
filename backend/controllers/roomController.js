@@ -6,6 +6,7 @@ const {
   isRoomInfoValid,
   isSwitchInfoValid,
   getRoomAfterSwitch,
+  isUserSeatOnOtherPositions,
 } = require('../utilities/roomUtil')
 // roomId is in the range of [1000, 10000)
 const MAX_NUM_ROOM = 9999 - 1000 + 1
@@ -28,17 +29,19 @@ const getRooms = asyncHandler(async (req, res) => {
 
 
 // @desc   update a player's seat
-// @route  PUT /api/rooms/:id/:from/:to
+// @route  PUT /api/rooms/:id/:userId
 // @access Private
 const switchSeat = asyncHandler(async (req, res) => {
 
   const switchInfo = {
-    from: req.params.from,
-    to: req.params.to
+    from: req.body.from,
+    to: req.body.to,
+    playerId: req.params.userId,
+    playerName: req.body.name
   }
   const room = await Room.findOne({id : req.params.id})
 
-  if (!isSwitchInfoValid(switchInfo, room.seats.length)) {
+  if (!isSwitchInfoValid(switchInfo, room)) {
     res.status(400)
     throw new Error('The switchInfo is not valid')
   }
@@ -48,7 +51,12 @@ const switchSeat = asyncHandler(async (req, res) => {
     throw new Error (`Room with id ${req.params.id} not found`)
   }
 
-  if (!room.seats[switchInfo.to - 1]) {
+  if(isUserSeatOnOtherPositions(room, switchInfo)) {
+    res.status(400)
+    throw new Error('User has seat on positions other than where they are from')
+  }
+
+  if (room.seats[switchInfo.to - 1].player.id) {
     res.status(404)
     throw new Error ('Someone has already sit there, please refresh the page and try another seat')
   }
@@ -66,6 +74,19 @@ const switchSeat = asyncHandler(async (req, res) => {
 // @route  PUT /api/rooms/:id
 // @access Private
 const updateRoom = asyncHandler(async (req, res) => {
+  if (!req.body.roomInfo) {
+    res.status(400)
+    throw new Error('Need to include the roomInfo')
+  }
+
+  const roomInfo = req.body.roomInfo
+
+  if (!isRoomInfoValid(roomInfo)) {
+    res.status(400)
+    throw new Error('The room information is not valid')
+  }
+
+
   res.status(200).json({ result: `update room ${req.params.id}` })
 })
 

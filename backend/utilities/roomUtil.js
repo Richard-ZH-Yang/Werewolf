@@ -39,11 +39,31 @@ async function getFourDigitId(existingIds) {
   return roomId
 }
 
+// REQUIRES: the target seats that switched to have no player, if switchInfo.from is not 0, player with id switchInfo.playerId must be present in switchInfo.from
+// EFFECTS: if the player does not have seat yet, set the seat switched to with the player information. Otherwise switch the seat that player sit on with the seat switched to, but will not switch the identity
 function getRoomAfterSwitch(room, switchInfo) {
- const temp = room.seats[switchInfo.to - 1].player
- room.seats[switchInfo.to - 1].player = room.seats[switchInfo.from - 1].player
- room.seats[switchInfo.from - 1].player = temp
- return room
+  if (switchInfo.from === 0) {
+    room.seats[switchInfo.to - 1].player.id = switchInfo.playerId
+    room.seats[switchInfo.to - 1].player.name = switchInfo.playerName
+  } else {
+    const temp = room.seats[switchInfo.to - 1].player
+    room.seats[switchInfo.to - 1].player =
+      room.seats[switchInfo.from - 1].player
+    room.seats[switchInfo.from - 1].player = temp
+  }
+  return room
+}
+
+// EFFECTS: check if the player has seat on other positions other than the position they switch from
+function isUserSeatOnOtherPositions(room, switchInfo) {
+ let result = false
+ room.seats.forEach((seat)=> {
+  if (seat.player.id === switchInfo.playerId && seat.id !== switchInfo.from) {
+   result = true
+  }
+ })
+ return result
+
 }
 
 // REQUIRES: there are 7 characters in the roomInfo, namely wolf, civilian, prophet, witch, hunter, idiot, guardian
@@ -66,18 +86,24 @@ function isRoomInfoValid(roomInfo) {
   }
 }
 
-// EFFECTS: check if the switchInfo has from and to element, and if the to and from is in range of [1, numSeatsIncludingJudge]
-function isSwitchInfoValid(switchInfo, numSeatsIncludingJudge) {
-  if (!switchInfo.from || !switchInfo.to) {
-    return false
-  }
+// EFFECTS: check if the to is in range of [1, numSeatsIncludingJudge], and if the from is in range of [0, numSeatsIncludingJudge], and there are player name and id for switchInfo, and switchInfo.from matches what is present in room
+function isSwitchInfoValid(switchInfo, room) {
+ const numSeatsIncludingJudge = room.seats.length
 
-  if (switchInfo.from < 1 || switchInfo.from > numSeatsIncludingJudge) {
+  if (switchInfo.from < 0 || switchInfo.from > numSeatsIncludingJudge) {
     return false
   }
 
   if (switchInfo.to < 1 || switchInfo.to > numSeatsIncludingJudge) {
     return false
+  }
+
+  if (!switchInfo.playerId || !switchInfo.playerName) {
+    return false
+  }
+
+  if (switchInfo.from !== 0 && room.seats[switchInfo.from - 1].player.id !== switchInfo.playerId) {
+   return false
   }
 
   return true
@@ -128,4 +154,5 @@ module.exports = {
   isRoomInfoValid,
   isSwitchInfoValid,
   getRoomAfterSwitch,
+  isUserSeatOnOtherPositions,
 }
