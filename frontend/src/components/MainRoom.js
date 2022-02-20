@@ -4,6 +4,7 @@ import { Card, Button, Alert, Row, Col, Container } from 'react-bootstrap'
 import { useAuth, logout } from '../contexts/AuthContext'
 import ShowIdentity from './ShowIdentity'
 import LeaderBoard from './LeaderBoard'
+import Rules from './Rules'
 // import { useFetch } from './useFetch'
 // import Player from './Player'
 import uuid from 'react-uuid'
@@ -20,6 +21,7 @@ export default function MainRoom() {
   const [seating, setSeating] = useState([])
   const [showIdentity, setShowIdentity] = useState(false)
   const [showLeaderBoard, setShowLeaderBoard] = useState(false)
+  const [showRules, setShowRules] = useState(false)
   const [leaderBoard, setLeaderBoard] = useState([])
 
   const { currentUser, logout } = useAuth()
@@ -155,6 +157,14 @@ export default function MainRoom() {
     setShowLeaderBoard(false)
   }
 
+  function handleViewRules() {
+    setShowRules(true)
+  }
+
+  function handleCloseRules() {
+    setShowRules(false)
+  }
+
   return (
     <>
       {loading ? (
@@ -216,6 +226,13 @@ export default function MainRoom() {
           <Button
             disabled={loading}
             className='btn text-center w-100 mt-2'
+            onClick={handleViewRules}
+          >
+            View Rules
+          </Button>
+          <Button
+            disabled={loading}
+            className='btn text-center w-100 mt-2'
             onClick={handleLogout}
           >
             Log out
@@ -231,6 +248,11 @@ export default function MainRoom() {
             show={showLeaderBoard}
             onHide={handleCloseLeaderBoard}
             leaderBoard={leaderBoard}
+          />
+
+          <Rules
+            show={showRules}
+            onHide={handleCloseRules}
           />
         </div>
       )}
