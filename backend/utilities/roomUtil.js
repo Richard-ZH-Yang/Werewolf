@@ -86,8 +86,10 @@ function isRoomInfoValid(roomInfo) {
   }
 }
 
-// EFFECTS: check if the to is in range of [1, numSeatsIncludingJudge], and if the from is in range of [0, numSeatsIncludingJudge], and there are player name and id for switchInfo
-function isSwitchInfoValid(switchInfo, numSeatsIncludingJudge) {
+// EFFECTS: check if the to is in range of [1, numSeatsIncludingJudge], and if the from is in range of [0, numSeatsIncludingJudge], and there are player name and id for switchInfo, and switchInfo.from matches what is present in room
+function isSwitchInfoValid(switchInfo, room) {
+ const numSeatsIncludingJudge = room.seats.length
+
   if (switchInfo.from < 0 || switchInfo.from > numSeatsIncludingJudge) {
     return false
   }
@@ -98,6 +100,10 @@ function isSwitchInfoValid(switchInfo, numSeatsIncludingJudge) {
 
   if (!switchInfo.playerId || !switchInfo.playerName) {
     return false
+  }
+
+  if (switchInfo.from !== 0 && room.seats[switchInfo.from - 1].player.id !== switchInfo.playerId) {
+   return false
   }
 
   return true

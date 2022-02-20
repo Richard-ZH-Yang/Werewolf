@@ -41,7 +41,7 @@ const switchSeat = asyncHandler(async (req, res) => {
   }
   const room = await Room.findOne({id : req.params.id})
 
-  if (!isSwitchInfoValid(switchInfo, room.seats.length)) {
+  if (!isSwitchInfoValid(switchInfo, room)) {
     res.status(400)
     throw new Error('The switchInfo is not valid')
   }
