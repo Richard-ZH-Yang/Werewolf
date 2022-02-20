@@ -24,14 +24,24 @@ export default function SearchRoom() {
     e.preventDefault()
     try {
       const response = await fetch(`http://localhost:4567/rooms/${roomNumber}`)
+      // const response = await fetch(
+      //   `http://localhost:4321/apirooms/${roomNumber}`,
+      //   {
+      //     method: 'GET',
+      //     headers: {
+      //       'Content-type': 'application/json',
+      //     },
+      //   }
+      // )
+      console.log(response)
       if (response.status === 404) {
-        displayError('ERROR: Cannot find that room')
+        displayError(`ERROR: ${response.body.result}`)
       } else {
         // success
         navigate(`/mainroom/${roomNumber}`, { replace: true })
       }
     } catch (e) {
-      displayError("ERROR! Please try again")
+      displayError('ERROR! Please try again')
     }
   }
 

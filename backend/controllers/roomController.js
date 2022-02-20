@@ -16,6 +16,10 @@ const MAX_NUM_ROOM = 9999 - 1000 + 1
 // @access Private
 const getRoom = asyncHandler(async (req, res) => {
   const room = await Room.findOne({ id: req.params.id })
+  if (!room) {
+    res.status(404)
+    throw new Error("That room does not exist")
+  }
   res.status(200).json(room)
 })
 
