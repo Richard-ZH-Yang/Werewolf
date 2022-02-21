@@ -108,29 +108,37 @@ export default function MainRoom() {
       displayError("It's occupied, please try to refresh the page")
     } else {
       // success based on current state, also need to check with the backend
-      // TODO: communicate with backend, if failed, let user refresh the page
 
       const plan = {
         from: currentSeat,
         to: seatNumber,
-        name: currentUser.displayName
+        name: currentUser.displayName,
       }
 
-      const res = await fetch(`http://localhost:4321/api/rooms/${id}/${encodeURIComponent( currentUser.email)}`, {
-        method: 'PUT',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify(plan),
-      })
+      try {
+        const res = await fetch(
+          `http://localhost:4321/api/rooms/${id}/${encodeURIComponent(
+            currentUser.email
+          )}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(plan),
+          }
+        )
 
-      const result = await res.json()
+        const result = await res.json()
 
-      if (res.status === 404 || res.status === 400) {
-        displayError(`ERROR: ${result.result}`)
-      } else {
-      setCurrentSeat(seatNumber)
-      handleRefresh()
+        if (res.status === 404 || res.status === 400) {
+          displayError(`ERROR: ${result.result}`)
+        } else {
+          setCurrentSeat(seatNumber)
+          handleRefresh()
+        }
+      } catch {
+        displayError(`ERROR! Please try again`)
       }
     }
   }
@@ -244,9 +252,9 @@ export default function MainRoom() {
           <ShowIdentity
             show={showIdentity}
             onHide={handleCloseViewIdentity}
-            player={currentSeat === 0 ? {} : seating[currentSeat - 1]}
-            loading = {loading}
-
+            seat={currentSeat === 0 ? {} : seating[currentSeat - 1]}
+            loading={loading}
+            displayError={displayError}
           />
 
           <LeaderBoard
@@ -255,10 +263,7 @@ export default function MainRoom() {
             leaderBoard={leaderBoard}
           />
 
-          <Rules
-            show={showRules}
-            onHide={handleCloseRules}
-          />
+          <Rules show={showRules} onHide={handleCloseRules} />
         </div>
       )}
     </>
@@ -277,11 +282,10 @@ function seatIsOccupied(seatNumber, seating) {
 
 function getUserPosition(seating, userId) {
   let result = 0
-  seating.seats.forEach((seat)=> {
+  seating.seats.forEach((seat) => {
     if (seat.player.id === userId) {
       result = seat.id
     }
   })
   return result
-
 }
