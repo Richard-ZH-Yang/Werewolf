@@ -16,6 +16,10 @@ const MAX_NUM_ROOM = 9999 - 1000 + 1
 // @access Private
 const getRoom = asyncHandler(async (req, res) => {
   const room = await Room.findOne({ id: req.params.id })
+  if (!room) {
+    res.status(404)
+    throw new Error("That room does not exist")
+  }
   res.status(200).json(room)
 })
 
@@ -74,13 +78,14 @@ const switchSeat = asyncHandler(async (req, res) => {
 // @route  PUT /api/rooms/:id
 // @access Private
 const updateRoom = asyncHandler(async (req, res) => {
-  if (!req.body.roomInfo) {
+  if (!req.body.updateInfo) {
     res.status(400)
-    throw new Error('Need to include the roomInfo')
+    throw new Error('Need to include the updateInfo')
   }
 
-  const roomInfo = req.body.roomInfo
-
+  const updateInfo = req.body.updateInfo
+  const room = await Room.findOne({ id: req.params.id })
+  
   if (!isRoomInfoValid(roomInfo)) {
     res.status(400)
     throw new Error('The room information is not valid')

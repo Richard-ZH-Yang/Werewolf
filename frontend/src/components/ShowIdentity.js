@@ -15,7 +15,6 @@ export default function ShowIdentity({ show, onHide, player, loading }) {
 
 
 
-
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
@@ -25,6 +24,7 @@ export default function ShowIdentity({ show, onHide, player, loading }) {
         <Image src={require(picturePath)} responsive />
         {player.identity || "ERROR"}
       </Modal.Body>
+
       <Modal.Footer>
         <Button variant='secondary' onClick={onHide}>
           Close

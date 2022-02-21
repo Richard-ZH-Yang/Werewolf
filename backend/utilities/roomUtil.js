@@ -56,14 +56,13 @@ function getRoomAfterSwitch(room, switchInfo) {
 
 // EFFECTS: check if the player has seat on other positions other than the position they switch from
 function isUserSeatOnOtherPositions(room, switchInfo) {
- let result = false
- room.seats.forEach((seat)=> {
-  if (seat.player.id === switchInfo.playerId && seat.id !== switchInfo.from) {
-   result = true
-  }
- })
- return result
-
+  let result = false
+  room.seats.forEach((seat) => {
+    if (seat.player.id === switchInfo.playerId && seat.id !== switchInfo.from) {
+      result = true
+    }
+  })
+  return result
 }
 
 // REQUIRES: there are 7 characters in the roomInfo, namely wolf, civilian, prophet, witch, hunter, idiot, guardian
@@ -88,7 +87,7 @@ function isRoomInfoValid(roomInfo) {
 
 // EFFECTS: check if the to is in range of [1, numSeatsIncludingJudge], and if the from is in range of [0, numSeatsIncludingJudge], and there are player name and id for switchInfo, and switchInfo.from matches what is present in room
 function isSwitchInfoValid(switchInfo, room) {
- const numSeatsIncludingJudge = room.seats.length
+  const numSeatsIncludingJudge = room.seats.length
 
   if (switchInfo.from < 0 || switchInfo.from > numSeatsIncludingJudge) {
     return false
@@ -102,12 +101,18 @@ function isSwitchInfoValid(switchInfo, room) {
     return false
   }
 
-  if (switchInfo.from !== 0 && room.seats[switchInfo.from - 1].player.id !== switchInfo.playerId) {
-   return false
+  if (
+    switchInfo.from !== 0 &&
+    room.seats[switchInfo.from - 1].player.id !== switchInfo.playerId
+  ) {
+    return false
   }
 
   return true
 }
+
+// EFFECTS: check if the updateInfo matches what is present in the room
+function isUpdateInfoValid(updateInfo, room) {}
 
 // REQUIRES: there are 7 characters in the roomInfo, namely wolf, civilian, prophet, witch, hunter, idiot, guardian
 // EFFECTS: get how many players including judge are in this room
@@ -155,4 +160,5 @@ module.exports = {
   isSwitchInfoValid,
   getRoomAfterSwitch,
   isUserSeatOnOtherPositions,
+  isUpdateInfoValid,
 }
