@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Richard-ZH-Yang/Werewolf#readme",
   "dependencies": {
     "colors": "^1.4.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
     "express-async-handler": "^1.2.0",

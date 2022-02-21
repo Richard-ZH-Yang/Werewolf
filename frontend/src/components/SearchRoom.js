@@ -23,15 +23,17 @@ export default function SearchRoom() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const response = await fetch(`http://localhost:4567/rooms/${roomNumber}`)
+      const response = await fetch(`http://localhost:4321/api/rooms/${roomNumber}`)
+      
+      const res = await response.json()
       if (response.status === 404) {
-        displayError('ERROR: Cannot find that room')
+        displayError(`ERROR: ${res.result}`)
       } else {
         // success
         navigate(`/mainroom/${roomNumber}`, { replace: true })
       }
     } catch (e) {
-      displayError("ERROR! Please try again")
+      displayError('ERROR! Please try again')
     }
   }
 

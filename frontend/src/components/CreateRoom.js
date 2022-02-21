@@ -3,10 +3,8 @@ import { Form, Button, Card, Alert } from 'react-bootstrap'
 import { useAuth } from '../contexts/AuthContext'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
-
 const CreateRoom = ({ displayError }) => {
-   const navigate = useNavigate()
-
+  const navigate = useNavigate()
 
   const wolfRef = useRef()
   const civilianRef = useRef()
@@ -20,32 +18,35 @@ const CreateRoom = ({ displayError }) => {
   async function handleSubmit(e) {
     e.preventDefault()
     const newRoom = {
-      judgeId: currentUser.email,
-      judgeName: currentUser.displayName,
-      wolf: parseInt(wolfRef.current.value),
-      civilian: parseInt(civilianRef.current.value),
-      prophet: prophetRef.current.checked ? 1 : 0,
-      witch: witchRef.current.checked ? 1 : 0,
-      hunter: hunterRef.current.checked ? 1 : 0,
-      idiot: idiotRef.current.checked ? 1 : 0,
-      guardian: guardianRef.current.checked ? 1 : 0,
-    }
-    // TODO: send post request to backend
-    // if success, create and direct to new room with current user as a judge
-    // Otherwise, show an error message
-    const res = await fetch('http://localhost:4567/rooms', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
+      roomInfo: {
+        judgeId: currentUser.email,
+        judgeName: currentUser.displayName,
+        wolf: parseInt(wolfRef.current.value),
+        civilian: parseInt(civilianRef.current.value),
+        prophet: prophetRef.current.checked ? 1 : 0,
+        witch: witchRef.current.checked ? 1 : 0,
+        hunter: hunterRef.current.checked ? 1 : 0,
+        idiot: idiotRef.current.checked ? 1 : 0,
+        guardian: guardianRef.current.checked ? 1 : 0,
       },
-      body: JSON.stringify(newRoom),
-    })
-    // console.log(res.status)
-    const data = res.json()
-    if (res.status === 404) {
-      displayError('Error! Cannot create that room')
-    } else {
-      navigate(`/mainroom/${data.url}`, { replace: true })
+    }
+    try {
+      const res = await fetch('http://localhost:4321/api/rooms', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(newRoom),
+      })
+      const data = res.json()
+      console.log(data.result)
+      if (res.status === 404 || res.status === 400) {
+        displayError(`ERROR: ${data.result}`)
+      } else {
+        navigate(`/mainroom/${data.url}`, { replace: true })
+      }
+    } catch (e) {
+      displayError('ERROR! Please try again')
     }
   }
 

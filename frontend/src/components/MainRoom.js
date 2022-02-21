@@ -101,12 +101,12 @@ export default function MainRoom() {
   async function handleChangeSeat(seatNumber) {
     if (currentSeat === seatNumber) {
       // already seat here
-      displayError('You already here')
+      displayError('You already here, please try to refresh the page')
     } else if (seatIsOccupied(seatNumber, seating)) {
       // already occupied
-      displayError("It's occupied")
+      displayError("It's occupied, please try to refresh the page")
     } else {
-      // success, also need to check with the backend
+      // success based on current state, also need to check with the backend
       // TODO: communicate with backend, if failed, let user refresh the page
 
       const plan = {
