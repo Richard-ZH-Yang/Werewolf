@@ -242,6 +242,7 @@ export default function MainRoom() {
             show={showIdentity}
             onHide={handleCloseViewIdentity}
             player={currentSeat === 0 ? {} : seating[currentSeat - 1]}
+            loading = {loading}
           />
 
           <LeaderBoard
