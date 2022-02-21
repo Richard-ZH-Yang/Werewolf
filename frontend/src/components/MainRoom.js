@@ -227,7 +227,7 @@ export default function MainRoom() {
           <ShowIdentity
             show={showIdentity}
             onHide={handleCloseViewIdentity}
-            player={currentSeat === 0 ? {} : seating[currentSeat - 1]}
+            seat={currentSeat === 0 ? {} : seating[currentSeat - 1]}
           />
 
           <LeaderBoard
@@ -243,7 +243,6 @@ export default function MainRoom() {
 
 function seatIsOccupied(seatNumber, seating) {
   let result = false
-  console.log(seating)
   seating.forEach((seat) => {
     if (seat.id === seatNumber && seat.player.name !== '') {
       result = true
