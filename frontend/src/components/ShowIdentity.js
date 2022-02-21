@@ -47,8 +47,16 @@ export default function ShowIdentity({ show, onHide, seat, displayError }) {
         <Modal.Title>View my identity</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Image src={showIdentity ? picture : defaultImage} onClick={handleShowIdentity} />
-        <h1 className='text-center mt-5'>{showIdentity ? (seat.player.identity || 'ERROR') : 'Click image to show the identity'}</h1>
+        <Image
+          className='rounded mx-auto d-block'
+          src={showIdentity ? picture : defaultImage}
+          onClick={handleShowIdentity}
+        />
+        <h2 className='text-center mt-5'>
+          {showIdentity
+            ? seat.player.identity || 'ERROR'
+            : 'Click image to show the identity'}
+        </h2>
       </Modal.Body>
 
       <Modal.Footer>
