@@ -23,19 +23,11 @@ export default function SearchRoom() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const response = await fetch(`http://localhost:4567/rooms/${roomNumber}`)
-      // const response = await fetch(
-      //   `http://localhost:4321/apirooms/${roomNumber}`,
-      //   {
-      //     method: 'GET',
-      //     headers: {
-      //       'Content-type': 'application/json',
-      //     },
-      //   }
-      // )
-      console.log(response)
+      const response = await fetch(`http://localhost:4321/api/rooms/${roomNumber}`)
+      
+      const res = await response.json()
       if (response.status === 404) {
-        displayError(`ERROR: ${response.body.result}`)
+        displayError(`ERROR: ${res.result}`)
       } else {
         // success
         navigate(`/mainroom/${roomNumber}`, { replace: true })
