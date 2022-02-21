@@ -244,7 +244,9 @@ export default function MainRoom() {
           <ShowIdentity
             show={showIdentity}
             onHide={handleCloseViewIdentity}
-            seat={currentSeat === 0 ? {} : seating[currentSeat - 1]}
+            player={currentSeat === 0 ? {} : seating[currentSeat - 1]}
+            loading = {loading}
+
           />
 
           <LeaderBoard
