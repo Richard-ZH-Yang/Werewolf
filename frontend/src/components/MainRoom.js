@@ -11,8 +11,8 @@ import PropTypes from 'prop-types'
 
 export default function MainRoom() {
   const { id } = useParams()
-  const url = `http://localhost:4567/rooms/${id}`
-  const leaderBoardUrl = 'http://localhost:4567/players'
+  const url = `http://localhost:4321/api/rooms/${id}`
+  const leaderBoardUrl = 'http://localhost:4321/api/players'
 
   const [error, setError] = useState('')
   const [currentSeat, setCurrentSeat] = useState(0)
@@ -108,25 +108,27 @@ export default function MainRoom() {
       // TODO: communicate with backend, if failed, let user refresh the page
 
       const plan = {
-        currentRoomId: id,
-        currentUserId: currentUser.email,
-        currentSeat: currentSeat,
-        targetSeat: seatNumber,
+        from: currentSeat,
+        to: seatNumber,
+        name: currentUser.displayName
       }
 
-      // const res = await fetch('http://localhost:4567/seat', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-type': 'application/json',
-      //   },
-      //   body: JSON.stringify(plan),
-      // })
+      const res = await fetch(`http://localhost:4321/api/rooms/${id}/${encodeURIComponent( currentUser.email)}`, {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(plan),
+      })
 
-      // if (res.status === 404) {
-      // } else {
+      const result = await res.json()
+
+      if (res.status === 404 || res.status === 400) {
+        displayError(`ERROR: ${result.result}`)
+      } else {
       setCurrentSeat(seatNumber)
       handleRefresh()
-      // }
+      }
     }
   }
 
