@@ -243,8 +243,9 @@ export default function MainRoom() {
 
 function seatIsOccupied(seatNumber, seating) {
   let result = false
+  console.log(seating)
   seating.forEach((seat) => {
-    if (seat.seatNumber === seatNumber && seat.name !== '') {
+    if (seat.id === seatNumber && seat.player.name !== '') {
       result = true
     }
   })
