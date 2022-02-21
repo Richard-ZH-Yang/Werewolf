@@ -37,6 +37,7 @@ export default function MainRoom() {
       return a.id - b.id
     })
 
+    setCurrentSeat(getUserPosition(room, currentUser.email))
     setSeating(seating)
     setLoading(false)
   }, [url])
@@ -248,4 +249,15 @@ function seatIsOccupied(seatNumber, seating) {
     }
   })
   return result
+}
+
+function getUserPosition(seating, userId) {
+  let result = 0
+  seating.seats.forEach((seat)=> {
+    if (seat.player.id === userId) {
+      result = seat.id
+    }
+  })
+  return result
+
 }
