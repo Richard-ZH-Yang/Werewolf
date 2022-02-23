@@ -3,13 +3,13 @@
 ## About
 This game generally requires 6 to 12 players and a host (commonly called God or Judge). The game is played in alternating phases of "night" and "day". The host is responsible for distributing character identities, handling the player's character skills, and the alternation of stages.
 
-And this project provides a platform to play Werewolf in person, with one person as a host to give instructions. It has a room for players to join, and after selecting the seat, player can view their randomly generated roles based the settings from the host. It also able to track the results for each player and provides a leaderboard to provide insight on who is the best player. 
+This project provides a platform to play Werewolf in person, with one person as a host to give instructions. It has a room for players to join, and after selecting the seat, player can view their randomly generated roles based the settings from the host. It also able to track the results for each player and provides a leaderboard to provide insight on who is the best player. 
 
 ## Technology Used
 We use **MERN** tech stack for this project. For the fronend, we use React and Bootstrap for styling, and use firebase for user authentication. For the backend, we use Express.js to develop the controllers and register routes. We use MongoDB Atlas to store all the information and interact with the backend
 
 ## Rules
-Each player will be given a character before the game starts. The game characters are mainly divided into two opposing camps: the "human" camp and the "werewolf" camp. There are several civilians and priests in the human camp. They don't know each other's identities. They need to use the abilities of priests and the player's language and expressions to distinguish between humans and werewolves in the village, to vote for exile and to use character skills. Eliminate the werewolves in other ways to win. The werewolf camp has a small number of people and mixes with the human camp to confuse people; they can meet each other every night and kill a player together. The werewolf camp needs to eliminate all civilians or priests to win.
+Each player will be given a character before the game starts. The game characters are mainly divided into two opposing camps: the "human" camp and the "wolf" camp. There are several civilians and priests in the human camp. They don't know each other's identities. They need to use the abilities of priests and the player's language and expressions to distinguish between humans and werewolves in the village, to vote for exile and to use character skills. Eliminate the werewolves in other ways to win. The wolf camp has a small number of people and mixes with the human camp to confuse people; they can meet each other every night and kill a player together. The wolf camp needs to eliminate all civilians or priests to win.
 
 After the end of the night every day, enter the day phase, all surviving players take turns to speak, and after everyone has finished speaking, they vote to exile a player.
 
@@ -18,19 +18,19 @@ After the end of the night every day, enter the day phase, all surviving players
 The role of Sheriff will be elected on the first night before the announcement of the night before the death. Players participating in the election will take turns to speak, and then players who have not run for Sheriff will vote for the Sheriff. The sheriff can arrange the order of speaking in the following day (police left/right: one player from the sheriff's left/right speaks clockwise/counterclockwise) and has the right to return the vote. In the exile referendum, the sheriff's vote is counted as 1.5 votes. The sheriff who is eliminated in any way can choose to hand over or tear up the badge.
 
 
-#### Werewolf Camp
-`Werewolf`:
-Night can open his eyes to meet his teammates and discuss tactics and choose the target to kill. Werewolves can choose not to kill any players that night or kill themselves. Mixed into the village during the day to confuse good people. The werewolf can choose to announce the character card self-elimination at any time during the day and force it to enter the night phase and leave the field at the end of the night phase.
+#### Wolf Camp
+`Wolf`:
+Night can open his eyes to meet his teammates and discuss tactics and choose the target to kill. Werewolves can choose not to kill any players that night or kill themselves. Mixed into the village during the day to confuse good people. The wolf can choose to announce the character card self-elimination at any time during the day and force it to enter the night phase and leave the field at the end of the night phase.
 
 #### Human Camp
 `Civilian`:
-No special skills, eyes closed throughout the night phase, and players who are suspected of being a werewolf are voted to exile through the information obtained during the day phase
+No special skills, eyes closed throughout the night phase, and players who are suspected of being a wolf are voted to exile through the information obtained during the day phase
 
 `Prophet`:
 A priestly character. You can check the faction of a surviving player every night, and report information to good people by speaking during the day
 
 `Witch`:
-A priestly character. Have a bottle of antidote and a bottle of poison. When the antidote is not used, you can know who the werewolf killed and decide whether to save the player. However, the antidote cannot be used to save oneself at all times. The witch can also use the information obtained during the day to poison the suspected object, and the object cannot use the skills after death. Antidote and poison cannot be used on the same night.
+A priestly character. Have a bottle of antidote and a bottle of poison. When the antidote is not used, you can know who the wolf killed and decide whether to save the player. However, the antidote cannot be used to save oneself at all times. The witch can also use the information obtained during the day to poison the suspected object, and the object cannot use the skills after death. Antidote and poison cannot be used on the same night.
 
 `Hunter`:
 A priestly role. In addition to being poisoned, when you are eliminated in any other way, you can announce the character card to activate skills and shoot a player away, or you can choose to suppress the gun and not activate skills.
@@ -39,7 +39,7 @@ A priestly role. In addition to being poisoned, when you are eliminated in any o
 A priestly role. If an idiot is cast in a daytime banishment referendum, a character card must be announced to be immune to the banishment, but he will lose his right to vote in subsequent banishment referendums.
 
 `Guardian`:
-A priestly role. You can choose to protect a player from being killed by werewolves every night, and you can choose to protect yourself or not, and you cannot protect the same player for two consecutive nights. If a player is killed by a werewolf, and the guard and the witch guard and use the antidote at the same time, the player will still die. The guard's protection cannot stop the witch's poison.
+A priestly role. You can choose to protect a player from being killed by werewolves every night, and you can choose to protect yourself or not, and you cannot protect the same player for two consecutive nights. If a player is killed by a wolf, and the guard and the witch guard and use the antidote at the same time, the player will still die. The guard's protection cannot stop the witch's poison.
 
 
 
