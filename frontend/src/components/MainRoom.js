@@ -17,6 +17,7 @@ export default function MainRoom() {
 
   const [error, setError] = useState('')
   const [currentSeat, setCurrentSeat] = useState(0)
+  const [isJudge, setIsJudge] = useState(false)
   const [loading, setLoading] = useState(true)
   const [seating, setSeating] = useState([])
   const [showIdentity, setShowIdentity] = useState(false)
@@ -41,6 +42,11 @@ export default function MainRoom() {
 
     setCurrentSeat(getUserPosition(room, currentUser.email))
     setSeating(seating)
+
+    // judge is at the last position
+    console.log(currentSeat)
+  
+    seating.length === currentSeat ? setIsJudge(true) : setIsJudge(false)
     setLoading(false)
   }, [url])
 
@@ -212,35 +218,42 @@ export default function MainRoom() {
               })}
             </Row>
           </Container>
-          <Button
-            disabled={loading}
-            className='btn text-center w-100 mt-2'
-            onClick={handleRefresh}
-          >
-            Refresh
-          </Button>
+          {isJudge ? (
+            <h1> HELLO JUDGE</h1>
+          ) : (
+            <div className='buttons'>
+              <Button
+                disabled={loading}
+                className='btn text-center w-100 mt-2'
+                onClick={handleRefresh}
+              >
+                Refresh
+              </Button>
 
-          <Button
-            disabled={loading}
-            className='btn text-center w-100 mt-2'
-            onClick={handleViewIdentity}
-          >
-            View my identity
-          </Button>
-          <Button
-            disabled={loading}
-            className='btn text-center w-100 mt-2'
-            onClick={handleViewLeaderBoard}
-          >
-            Leader Board
-          </Button>
-          <Button
-            disabled={loading}
-            className='btn text-center w-100 mt-2'
-            onClick={handleViewRules}
-          >
-            View Rules
-          </Button>
+              <Button
+                disabled={loading}
+                className='btn text-center w-100 mt-2'
+                onClick={handleViewIdentity}
+              >
+                View my identity
+              </Button>
+              <Button
+                disabled={loading}
+                className='btn text-center w-100 mt-2'
+                onClick={handleViewLeaderBoard}
+              >
+                Leader Board
+              </Button>
+              <Button
+                disabled={loading}
+                className='btn text-center w-100 mt-2'
+                onClick={handleViewRules}
+              >
+                View Rules
+              </Button>
+            </div>
+          )}
+
           <Button
             disabled={loading}
             className='btn text-center w-100 mt-2'
