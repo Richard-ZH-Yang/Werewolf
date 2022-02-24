@@ -6,6 +6,7 @@ const {
   isRoomInfoValid,
   isSwitchInfoValid,
   getRoomAfterSwitch,
+  getRoomInfoFromExistingRoom,
   getPlayerPositions,
   isUserSeatOnOtherPositions,
 } = require('../utilities/roomUtil')
@@ -83,7 +84,7 @@ const resetRoom = asyncHandler(async (req, res) => {
 
   const room = await Room.findOne({ id: req.params.id })
   const playerPositions = getPlayerPositions(room)
-
+  const roomInfo = getRoomInfoFromExistingRoom(room)
 
   res.status(200).json({ result: `update room ${req.params.id}` })
 })
