@@ -111,8 +111,20 @@ function isSwitchInfoValid(switchInfo, room) {
   return true
 }
 
+// REQUIRES: emptySeats.length = playerPositions.length, there is only one judge and it is at the last position
+// EFFECTS: place all the players except judge into the emptySeats
+function placePlayersToEmptySeats(emptySeats, playerPositions) {
+  let index = 0
+  emptySeats.forEach((seat) => {
+    seat.player.id = playerPositions[index].id
+    seat.player.name = playerPositions[index].name
+    index++
+  })
+  return emptySeats
+}
 
-// EFFECTS: get a array with all the players in the room, each element has the information about a player's id and name
+// REQUIRES: there is only one judge and it is at the last position
+// EFFECTS: get a array with all the players including judge in the room, each element has the information about a player's id and name
 function getPlayerPositions(room) {
   let players = []
   room.seats.forEach((seat) => {
@@ -120,6 +132,7 @@ function getPlayerPositions(room) {
       id: seat.player.id,
       name: seat.player.name
     })
+  
   })
 
   return players
@@ -215,4 +228,5 @@ module.exports = {
   isUserSeatOnOtherPositions,
   getRoomInfoFromExistingRoom,
   getPlayerPositions,
+  placePlayersToEmptySeats,
 }
