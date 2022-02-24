@@ -6,6 +6,7 @@ const {
   isRoomInfoValid,
   isSwitchInfoValid,
   getRoomAfterSwitch,
+  getPlayerPositions,
   isUserSeatOnOtherPositions,
 } = require('../utilities/roomUtil')
 // roomId is in the range of [1000, 10000)
@@ -75,22 +76,13 @@ const switchSeat = asyncHandler(async (req, res) => {
   res.status(200).json( updatedRoom )
 })
 
-// @desc   update room
+// @desc   reset all the identities except judge in this room
 // @route  PUT /api/rooms/:id
 // @access Private
-const updateRoom = asyncHandler(async (req, res) => {
-  if (!req.body.updateInfo) {
-    res.status(400)
-    throw new Error('Need to include the updateInfo')
-  }
+const resetRoom = asyncHandler(async (req, res) => {
 
-  const updateInfo = req.body.updateInfo
   const room = await Room.findOne({ id: req.params.id })
-  
-  if (!isRoomInfoValid(roomInfo)) {
-    res.status(400)
-    throw new Error('The room information is not valid')
-  }
+  const playerPositions = getPlayerPositions(room)
 
 
   res.status(200).json({ result: `update room ${req.params.id}` })
@@ -151,7 +143,7 @@ const deleteRoom = asyncHandler(async (req, res) => {
 module.exports = {
   getRoom,
   getRooms,
-  updateRoom,
+  resetRoom,
   createRoom,
   deleteRoom,
   switchSeat,

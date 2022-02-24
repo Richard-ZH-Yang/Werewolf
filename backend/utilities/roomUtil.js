@@ -111,8 +111,19 @@ function isSwitchInfoValid(switchInfo, room) {
   return true
 }
 
-// EFFECTS: check if the updateInfo matches what is present in the room
-function isUpdateInfoValid(updateInfo, room) {}
+
+// EFFECTS: get a array with all the players in the room, each element has the information about a player's id and name
+function getPlayerPositions(room) {
+  let players = []
+  room.seats.forEach((seat) => {
+    players.push({
+      id: seat.player.id,
+      name: seat.player.name
+    })
+  })
+
+  return players
+}
 
 // REQUIRES: there are 7 characters in the roomInfo, namely wolf, civilian, prophet, witch, hunter, idiot, guardian
 // EFFECTS: get how many players including judge are in this room
@@ -161,4 +172,5 @@ module.exports = {
   getRoomAfterSwitch,
   isUserSeatOnOtherPositions,
   isUpdateInfoValid,
+  getPlayerPositions,
 }
