@@ -111,8 +111,74 @@ function isSwitchInfoValid(switchInfo, room) {
   return true
 }
 
-// EFFECTS: check if the updateInfo matches what is present in the room
-function isUpdateInfoValid(updateInfo, room) {}
+// REQUIRES: emptySeats.length = playerPositions.length, there is only one judge and it is at the last position
+// EFFECTS: place all the players except judge into the emptySeats
+function placePlayersToEmptySeats(emptySeats, playerPositions) {
+  let index = 0
+  emptySeats.forEach((seat) => {
+    seat.player.id = playerPositions[index].id
+    seat.player.name = playerPositions[index].name
+    index++
+  })
+  return emptySeats
+}
+
+// REQUIRES: there is only one judge and it is at the last position
+// EFFECTS: get a array with all the players including judge in the room, each element has the information about a player's id and name
+function getPlayerPositions(room) {
+  let players = []
+  room.seats.forEach((seat) => {
+    players.push({
+      id: seat.player.id,
+      name: seat.player.name
+    })
+  
+  })
+
+  return players
+}
+
+// REQUIRES: there are 7 characters in the roomInfo, namely wolf, civilian, prophet, witch, hunter, idiot, guardian
+// EFFECTS: extract the roomInfo from an existing room in the same format as creating room payload
+function getRoomInfoFromExistingRoom(room) {
+  let roomInfo = {
+    judgeId: '',
+    judgeName: '',
+    wolf: 0,
+    civilian: 0,
+    prophet: 0,
+    witch: 0,
+    hunter: 0,
+    idiot: 0,
+    guardian: 0,
+  }
+
+  room.seats.forEach((seat) => {
+    if (seat.player.identity === 'WOLF') {
+      roomInfo.wolf = roomInfo.wolf + 1
+    } else if (seat.player.identity === 'CIVILIAN') {
+      roomInfo.civilian = roomInfo.civilian + 1
+    } else if (seat.player.identity === 'PROPHET') {
+      roomInfo.prophet = roomInfo.prophet + 1
+    } else if (seat.player.identity === 'WITCH') {
+      roomInfo.witch = roomInfo.witch + 1
+    } else if (seat.player.identity === 'HUNTER') {
+      roomInfo.hunter = roomInfo.hunter + 1
+    } else if (seat.player.identity === 'IDIOT') {
+      roomInfo.idiot = roomInfo.idiot + 1
+    } else if (seat.player.identity === 'GUARDIAN') {
+      roomInfo.guardian = roomInfo.guardian + 1
+    } else if (seat.player.identity === 'JUDGE') {
+      roomInfo.judgeId = seat.player.id
+      roomInfo.judgeName = seat.player.name
+    } else {
+      throw new Error('There should be only 7 characters and 1 judge')
+    }
+  })
+
+  return roomInfo
+
+}
 
 // REQUIRES: there are 7 characters in the roomInfo, namely wolf, civilian, prophet, witch, hunter, idiot, guardian
 // EFFECTS: get how many players including judge are in this room
@@ -160,5 +226,7 @@ module.exports = {
   isSwitchInfoValid,
   getRoomAfterSwitch,
   isUserSeatOnOtherPositions,
-  isUpdateInfoValid,
+  getRoomInfoFromExistingRoom,
+  getPlayerPositions,
+  placePlayersToEmptySeats,
 }
