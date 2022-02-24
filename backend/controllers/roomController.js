@@ -32,7 +32,8 @@ const getRooms = asyncHandler(async (req, res) => {
 })
 
 
-// @desc   update a player's seat
+// @desc   update a player's seat, will throw an error if the target seat have been occupied, or the user with the same id 
+//         has  seat on positions other than where user is switched from
 // @route  PUT /api/rooms/:id/:userId
 // @access Private
 const switchSeat = asyncHandler(async (req, res) => {
@@ -95,7 +96,7 @@ const updateRoom = asyncHandler(async (req, res) => {
   res.status(200).json({ result: `update room ${req.params.id}` })
 })
 
-// @desc   create room
+// @desc   create a room with random 4 digit room id, let the room creator be the judge and seat on the last position
 // @route  POST /api/rooms
 // @access Private
 const createRoom = asyncHandler(async (req, res) => {
