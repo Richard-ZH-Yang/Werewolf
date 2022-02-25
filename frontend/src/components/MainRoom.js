@@ -218,9 +218,9 @@ export default function MainRoom() {
               })}
             </Row>
           </Container>
-          {isJudge ? (
+          {/* {isJudge ? (
             <h1> HELLO JUDGE</h1>
-          ) : (
+          ) : ( */}
             <div className='buttons'>
               <Button
                 disabled={loading}
@@ -252,7 +252,7 @@ export default function MainRoom() {
                 View Rules
               </Button>
             </div>
-          )}
+          {/* )} */}
 
           <Button
             disabled={loading}
