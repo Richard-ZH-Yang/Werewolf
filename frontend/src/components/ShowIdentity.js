@@ -8,6 +8,7 @@ import witchImage from '../data/images/WITCH.png'
 import hunterImage from '../data/images/HUNTER.png'
 import idiotImage from '../data/images/IDIOT.png'
 import guardianImage from '../data/images/GUARDIAN.png'
+import PropTypes from 'prop-types'
 
 
 
@@ -68,3 +69,15 @@ export default function ShowIdentity({ show, onHide, seat, displayError }) {
   )
 }
 
+ShowIdentity.propTypes = {
+  seat: PropTypes.object.isRequired,
+
+}
+
+ShowIdentity.defaultProps = {
+  seat: {
+    player: {
+      identity: 'LOADING'
+    }
+  }
+}
