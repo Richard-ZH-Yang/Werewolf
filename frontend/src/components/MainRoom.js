@@ -46,7 +46,7 @@ export default function MainRoom() {
     // judge is at the last position
     console.log(currentSeat)
   
-    seating.length === currentSeat ? setIsJudge(true) : setIsJudge(false)
+    // seating.length === currentSeat ? setIsJudge(true) : setIsJudge(false)
     setLoading(false)
   }, [url])
 
@@ -300,5 +300,6 @@ function getUserPosition(seating, userId) {
       result = seat.id
     }
   })
+  console.log(result)
   return result
 }
