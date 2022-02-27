@@ -36,6 +36,9 @@ export default function ShowIdentity({
         setPicture(hunterImage)
       } else if (seat.player.identity === 'IDIOT') {
         setPicture(idiotImage)
+      } else if (seat.player.identity === 'JUDGE') {
+        // judge does not need a identity image, this is set to prevent displaying error
+        setPicture(defaultImage)
       } else {
         displayError('ERROR! Not a valid identity')
         setPicture(defaultImage)
