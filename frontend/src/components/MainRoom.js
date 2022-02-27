@@ -44,7 +44,9 @@ export default function MainRoom() {
     setCurrentSeat(currentPosition)
     setSeating(seating)
 
-    seating[currentPosition - 1].player.identity === 'JUDGE' ? setIsJudge(true) : setIsJudge(false)
+    seating[currentPosition - 1].player.identity === 'JUDGE'
+      ? setIsJudge(true)
+      : setIsJudge(false)
     setLoading(false)
   }, [url])
 
@@ -163,6 +165,14 @@ export default function MainRoom() {
     }
   }
 
+  function handleViewAllIdentities() {
+    console.log("ALL")
+  }
+
+  function handleResetIdentities() {
+    
+  }
+
   function handleViewLeaderBoard() {
     getLeaderBoard()
     setShowLeaderBoard(true)
@@ -216,18 +226,32 @@ export default function MainRoom() {
               })}
             </Row>
           </Container>
-          {/* {isJudge ? (
-            <h1> HELLO JUDGE</h1>
-          ) : ( */}
-            <div className='buttons'>
+          <Button
+            disabled={loading}
+            className='btn text-center w-100 mt-2'
+            onClick={handleRefresh}
+          >
+            Refresh
+          </Button>
+          {isJudge ? (
+            <div className='buttons-judge'>
               <Button
                 disabled={loading}
                 className='btn text-center w-100 mt-2'
-                onClick={handleRefresh}
+                onClick={handleViewIdentity}
               >
-                Refresh
+                View All Identities
               </Button>
-
+              <Button
+                disabled={loading}
+                className='btn text-center w-100 mt-2'
+                onClick={handleResetIdentities}
+              >
+                Reset Identities
+              </Button>
+            </div>
+          ) : (
+            <div className='buttons-NotJudge'>
               <Button
                 disabled={loading}
                 className='btn text-center w-100 mt-2'
@@ -250,7 +274,7 @@ export default function MainRoom() {
                 View Rules
               </Button>
             </div>
-          {/* )} */}
+          )}
 
           <Button
             disabled={loading}
