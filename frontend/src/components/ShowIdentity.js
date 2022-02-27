@@ -10,33 +10,40 @@ import idiotImage from '../data/images/IDIOT.png'
 import guardianImage from '../data/images/GUARDIAN.png'
 import PropTypes from 'prop-types'
 
-
-
-export default function ShowIdentity({ show, onHide, seat, displayError }) {
+export default function ShowIdentity({
+  show,
+  onHide,
+  seat,
+  displayError,
+  loading,
+}) {
   const [picture, setPicture] = useState(defaultImage)
   const [showIdentity, setShowIdentity] = useState(false)
 
-  useEffect(()=> {
-    if (seat.player.identity === 'WOLF') {
-      setPicture(wolfImage)
-    } else if (seat.player.identity === 'PROPHET') {
-      setPicture(prophetImage)
-    } else if (seat.player.identity === 'CIVILIAN') {
-      setPicture(civilianImage)
-    } else if (seat.player.identity === 'WITCH') {
-      setPicture(witchImage)
-    } else if (seat.player.identity === 'GUARDIAN') {
-      setPicture(guardianImage)
-    } else if (seat.player.identity === 'HUNTER') {
-      setPicture(hunterImage)
-    } else if (seat.player.identity === 'IDIOT') {
-      setPicture(idiotImage)
-    } else {
-      displayError('ERROR! Not a valid identity')
+  useEffect(() => {
+    try {
+      if (seat.player.identity === 'WOLF') {
+        setPicture(wolfImage)
+      } else if (seat.player.identity === 'PROPHET') {
+        setPicture(prophetImage)
+      } else if (seat.player.identity === 'CIVILIAN') {
+        setPicture(civilianImage)
+      } else if (seat.player.identity === 'WITCH') {
+        setPicture(witchImage)
+      } else if (seat.player.identity === 'GUARDIAN') {
+        setPicture(guardianImage)
+      } else if (seat.player.identity === 'HUNTER') {
+        setPicture(hunterImage)
+      } else if (seat.player.identity === 'IDIOT') {
+        setPicture(idiotImage)
+      } else {
+        displayError('ERROR! Not a valid identity')
+        setPicture(defaultImage)
+      }
+    } catch (e) {
       setPicture(defaultImage)
     }
-  }, [])
-
+  }, [showIdentity])
 
   const handleShowIdentity = () => {
     setShowIdentity(!showIdentity)
@@ -71,13 +78,12 @@ export default function ShowIdentity({ show, onHide, seat, displayError }) {
 
 ShowIdentity.propTypes = {
   seat: PropTypes.object.isRequired,
-
 }
 
 ShowIdentity.defaultProps = {
   seat: {
     player: {
-      identity: 'LOADING'
-    }
-  }
+      identity: 'LOADING',
+    },
+  },
 }
