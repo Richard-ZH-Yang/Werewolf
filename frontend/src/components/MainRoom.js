@@ -40,13 +40,11 @@ export default function MainRoom() {
       return a.id - b.id
     })
 
-    setCurrentSeat(getUserPosition(room, currentUser.email))
+    const currentPosition = getUserPosition(room, currentUser.email)
+    setCurrentSeat(currentPosition)
     setSeating(seating)
 
-    // judge is at the last position
-    console.log(currentSeat)
-  
-    // seating.length === currentSeat ? setIsJudge(true) : setIsJudge(false)
+    seating[currentPosition - 1].player.identity === 'JUDGE' ? setIsJudge(true) : setIsJudge(false)
     setLoading(false)
   }, [url])
 
@@ -300,6 +298,5 @@ function getUserPosition(seating, userId) {
       result = seat.id
     }
   })
-  console.log(result)
   return result
 }
