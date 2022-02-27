@@ -105,11 +105,11 @@ export default function MainRoom() {
 
   async function handleChangeSeat(seatNumber) {
     if (currentSeat === seatNumber) {
-      // already seat here
       displayError('You already here, please try to refresh the page')
     } else if (seatIsOccupied(seatNumber, seating)) {
-      // already occupied
       displayError("It's occupied, please try to refresh the page")
+    } else if (isJudge) {
+      displayError('Judge should not able to switch seats')
     } else {
       // success based on current state, also need to check with the backend
 
