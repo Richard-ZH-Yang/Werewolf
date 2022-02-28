@@ -41,8 +41,6 @@ export default function MainRoom() {
       return a.id - b.id
     })
 
-    setInterval(getRoom, 5000)
-
     const currentPosition = getUserPosition(room, currentUser.email)
     setCurrentSeat(currentPosition)
     setSeating(seating)
@@ -85,6 +83,10 @@ export default function MainRoom() {
       setError('')
     }, 2000)
   }
+
+  useEffect(() => {
+    setInterval(getRoom, 5000)
+  }, [])
 
   useEffect(() => {
     getRoom()
