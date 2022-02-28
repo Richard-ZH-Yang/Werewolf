@@ -21,6 +21,7 @@ export default function MainRoom() {
   const [loading, setLoading] = useState(true)
   const [seating, setSeating] = useState([])
   const [showIdentity, setShowIdentity] = useState(false)
+  const [showAllIdentity, setShowAllIdentity] = useState(false)
   const [showLeaderBoard, setShowLeaderBoard] = useState(false)
   const [showRules, setShowRules] = useState(false)
   const [leaderBoard, setLeaderBoard] = useState([])
@@ -84,6 +85,10 @@ export default function MainRoom() {
   }
 
   useEffect(() => {
+    setInterval(getRoom, 5000)
+  }, [])
+
+  useEffect(() => {
     getRoom()
   }, [url, getRoom])
 
@@ -99,10 +104,6 @@ export default function MainRoom() {
     } catch {
       setError('Failed to log out')
     }
-  }
-
-  function handleRefresh() {
-    getRoom()
   }
 
   async function handleChangeSeat(seatNumber) {
@@ -141,7 +142,7 @@ export default function MainRoom() {
           displayError(`ERROR: ${result.result}`)
         } else {
           setCurrentSeat(seatNumber)
-          handleRefresh()
+          getRoom()
         }
       } catch {
         displayError(`ERROR! Please try again`)
@@ -165,12 +166,29 @@ export default function MainRoom() {
     }
   }
 
-  function handleViewAllIdentities() {
-    console.log("ALL")
+  function handleToggleViewAllIdentities() {
+    setShowAllIdentity(!showAllIdentity)
   }
 
-  function handleResetIdentities() {
-    
+  async function handleResetIdentities() {
+    try {
+      const res = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+        },
+      })
+
+      const result = await res.json()
+
+      if (res.status === 404 || res.status === 400) {
+        displayError(`ERROR: ${result.result}`)
+      } else {
+        getRoom()
+      }
+    } catch {
+      displayError(`ERROR! Please try again`)
+    }
   }
 
   function handleViewLeaderBoard() {
@@ -211,6 +229,7 @@ export default function MainRoom() {
                         <Card.Title as='h2'>{seatNumber}</Card.Title>
 
                         <h4>{seat.player.name}</h4>
+                        <p>{showAllIdentity ? seat.player.identity : null}</p>
                         <Button
                           disabled={loading}
                           onClick={() => handleChangeSeat(seatNumber)}
@@ -226,21 +245,14 @@ export default function MainRoom() {
               })}
             </Row>
           </Container>
-          <Button
-            disabled={loading}
-            className='btn text-center w-100 mt-2'
-            onClick={handleRefresh}
-          >
-            Refresh
-          </Button>
           {isJudge ? (
             <div className='buttons-judge'>
               <Button
                 disabled={loading}
                 className='btn text-center w-100 mt-2'
-                onClick={handleViewIdentity}
+                onClick={handleToggleViewAllIdentities}
               >
-                View All Identities
+                Toggle View All Identities
               </Button>
               <Button
                 disabled={loading}
@@ -251,7 +263,7 @@ export default function MainRoom() {
               </Button>
             </div>
           ) : (
-            <div className='buttons-NotJudge'>
+            <div className='buttons-notJudge'>
               <Button
                 disabled={loading}
                 className='btn text-center w-100 mt-2'
