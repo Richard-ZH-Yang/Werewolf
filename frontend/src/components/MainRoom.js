@@ -170,8 +170,28 @@ export default function MainRoom() {
     setShowAllIdentity(!showAllIdentity)
   }
 
-  function handleResetIdentities() {
-    
+  async function handleResetIdentities() {
+    try {
+      const res = await fetch(
+        url,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-type': 'application/json',
+          },
+        }
+      )
+
+      const result = await res.json()
+
+      if (res.status === 404 || res.status === 400) {
+        displayError(`ERROR: ${result.result}`)
+      } else {
+        handleRefresh()
+      }
+    } catch {
+      displayError(`ERROR! Please try again`)
+    }
   }
 
   function handleViewLeaderBoard() {
