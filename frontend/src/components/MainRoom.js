@@ -41,6 +41,8 @@ export default function MainRoom() {
       return a.id - b.id
     })
 
+    setInterval(getRoom, 5000)
+
     const currentPosition = getUserPosition(room, currentUser.email)
     setCurrentSeat(currentPosition)
     setSeating(seating)
@@ -172,15 +174,12 @@ export default function MainRoom() {
 
   async function handleResetIdentities() {
     try {
-      const res = await fetch(
-        url,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-type': 'application/json',
-          },
-        }
-      )
+      const res = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+        },
+      })
 
       const result = await res.json()
 
@@ -232,9 +231,7 @@ export default function MainRoom() {
                         <Card.Title as='h2'>{seatNumber}</Card.Title>
 
                         <h4>{seat.player.name}</h4>
-                        <p>
-                          {showAllIdentity ? seat.player.identity : null}
-                        </p>
+                        <p>{showAllIdentity ? seat.player.identity : null}</p>
                         <Button
                           disabled={loading}
                           onClick={() => handleChangeSeat(seatNumber)}
