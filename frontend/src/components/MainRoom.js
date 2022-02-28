@@ -21,6 +21,7 @@ export default function MainRoom() {
   const [loading, setLoading] = useState(true)
   const [seating, setSeating] = useState([])
   const [showIdentity, setShowIdentity] = useState(false)
+  const [showAllIdentity, setShowAllIdentity] = useState(false)
   const [showLeaderBoard, setShowLeaderBoard] = useState(false)
   const [showRules, setShowRules] = useState(false)
   const [leaderBoard, setLeaderBoard] = useState([])
@@ -165,8 +166,8 @@ export default function MainRoom() {
     }
   }
 
-  function handleViewAllIdentities() {
-    console.log("ALL")
+  function handleToggleViewAllIdentities() {
+    setShowAllIdentity(!showAllIdentity)
   }
 
   function handleResetIdentities() {
@@ -211,6 +212,9 @@ export default function MainRoom() {
                         <Card.Title as='h2'>{seatNumber}</Card.Title>
 
                         <h4>{seat.player.name}</h4>
+                        <p>
+                          {showAllIdentity ? seat.player.identity : null}
+                        </p>
                         <Button
                           disabled={loading}
                           onClick={() => handleChangeSeat(seatNumber)}
@@ -238,9 +242,9 @@ export default function MainRoom() {
               <Button
                 disabled={loading}
                 className='btn text-center w-100 mt-2'
-                onClick={handleViewIdentity}
+                onClick={handleToggleViewAllIdentities}
               >
-                View All Identities
+                Toggle View All Identities
               </Button>
               <Button
                 disabled={loading}
@@ -251,7 +255,7 @@ export default function MainRoom() {
               </Button>
             </div>
           ) : (
-            <div className='buttons-NotJudge'>
+            <div className='buttons-notJudge'>
               <Button
                 disabled={loading}
                 className='btn text-center w-100 mt-2'
