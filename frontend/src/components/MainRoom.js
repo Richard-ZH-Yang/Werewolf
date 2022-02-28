@@ -106,10 +106,6 @@ export default function MainRoom() {
     }
   }
 
-  function handleRefresh() {
-    getRoom()
-  }
-
   async function handleChangeSeat(seatNumber) {
     if (currentSeat === seatNumber) {
       displayError('You already here, please try to refresh the page')
@@ -146,7 +142,7 @@ export default function MainRoom() {
           displayError(`ERROR: ${result.result}`)
         } else {
           setCurrentSeat(seatNumber)
-          handleRefresh()
+          getRoom()
         }
       } catch {
         displayError(`ERROR! Please try again`)
@@ -188,7 +184,7 @@ export default function MainRoom() {
       if (res.status === 404 || res.status === 400) {
         displayError(`ERROR: ${result.result}`)
       } else {
-        handleRefresh()
+        getRoom()
       }
     } catch {
       displayError(`ERROR! Please try again`)
@@ -249,13 +245,6 @@ export default function MainRoom() {
               })}
             </Row>
           </Container>
-          <Button
-            disabled={loading}
-            className='btn text-center w-100 mt-2'
-            onClick={handleRefresh}
-          >
-            Refresh
-          </Button>
           {isJudge ? (
             <div className='buttons-judge'>
               <Button
