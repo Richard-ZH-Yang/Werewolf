@@ -223,147 +223,143 @@ export default function MainRoom() {
       {loading ? (
         <h1>loading ...</h1>
       ) : (
-        
-          <div className='MainRoom'>
-            <Container className='h-100'>
-              {error && <Alert variant='danger'>{error}</Alert>}
+        <div className='MainRoom'>
+          <Container className='h-100'>
+            {error && <Alert variant='danger'>{error}</Alert>}
 
-              <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
-                <Container>
-                  <Navbar.Brand >Werewolf</Navbar.Brand>
-                  <Navbar.Toggle aria-controls='responsive-navbar-nav' />
-                  <Navbar.Collapse id='responsive-navbar-nav'>
-                    <Nav className='me-auto'>
-                      <Nav.Link href='#features'>Features</Nav.Link>
-                      <Nav.Link href='#pricing'>Pricing</Nav.Link>
-                      <NavDropdown
-                        title='Dropdown'
-                        id='collasible-nav-dropdown'
+            <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
+              <Container>
+                <Navbar.Brand>Werewolf</Navbar.Brand>
+                <Navbar.Toggle aria-controls='responsive-navbar-nav' />
+                <Navbar.Collapse id='responsive-navbar-nav'>
+                  <Nav className='me-auto'>
+                    <Nav.Item>
+                      <Button
+                        disabled={loading}
+                        className='btn text-center'
+                        variant='dark'
+                        onClick={handleViewLeaderBoard}
                       >
-                        <NavDropdown.Item href='#action/3.1'>
-                          Action
-                        </NavDropdown.Item>
-                        <NavDropdown.Item href='#action/3.2'>
-                          Another action
-                        </NavDropdown.Item>
-                        <NavDropdown.Item href='#action/3.3'>
-                          Something
-                        </NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item href='#action/3.4'>
-                          Separated link
-                        </NavDropdown.Item>
-                      </NavDropdown>
-                    </Nav>
-                    <Nav>
-                      <Nav.Link href='#deets'>More deets</Nav.Link>
-                      <Nav.Link eventKey={2} href='#memes'>
-                        Dank memes
-                      </Nav.Link>
-                    </Nav>
-                  </Navbar.Collapse>
-                </Container>
-              </Navbar>
+                        Leader Board
+                      </Button>
+                    </Nav.Item>
+                    <Nav.Link href='#pricing'>Pricing</Nav.Link>
+                    <NavDropdown title='Dropdown' id='collasible-nav-dropdown'>
+                      <NavDropdown.Item href='#action/3.1'>
+                        Action
+                      </NavDropdown.Item>
+                      <NavDropdown.Item href='#action/3.2'>
+                        Another action
+                      </NavDropdown.Item>
+                      <NavDropdown.Item href='#action/3.3'>
+                        Something
+                      </NavDropdown.Item>
+                      <NavDropdown.Divider />
+                      <NavDropdown.Item href='#action/3.4'>
+                        Separated link
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                  </Nav>
+                  <Nav>
+                    <Nav.Link href='#deets'>More deets</Nav.Link>
+                    <Nav.Link eventKey={2} href='#memes'>
+                      Dank memes
+                    </Nav.Link>
+                  </Nav>
+                </Navbar.Collapse>
+              </Container>
+            </Navbar>
 
-              <Row className='h-100 w-100 align-items-center'>
-                {seating.map((seat) => {
-                  let seatNumber = seat.id
-                  return (
-                    <Col
-                      key={seat.player.id || uuid()}
-                      className='container-fluid mt-4 treeViewComponent h-100'
-                    >
-                      <Card
-                        border='primary'
-                        style={{ width: '18 rem', flex: 1 }}
-                      >
-                        <Card.Body className='d-flex flex-column mb-2'>
-                          <Card.Title as='h2'>{seatNumber}</Card.Title>
+            <Row className='h-100 w-100 align-items-center'>
+              {seating.map((seat) => {
+                let seatNumber = seat.id
+                return (
+                  <Col
+                    key={seat.player.id || uuid()}
+                    className='container-fluid mt-4 treeViewComponent h-100'
+                  >
+                    <Card border='primary' style={{ width: '18 rem', flex: 1 }}>
+                      <Card.Body className='d-flex flex-column mb-2'>
+                        <Card.Title as='h2'>{seatNumber}</Card.Title>
 
-                          <h4>{seat.player.name}</h4>
-                          <p>{showAllIdentity ? seat.player.identity : null}</p>
-                          <Button
-                            disabled={loading}
-                            onClick={() => handleChangeSeat(seatNumber)}
-                            className='btn mt-auto'
-                            variant='info'
-                          >
-                            Sit
-                          </Button>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  )
-                })}
-              </Row>
-            </Container>
-            {isJudge ? (
-              <div className='buttons-judge'>
-                <Button
-                  disabled={loading}
-                  className='btn text-center w-100 mt-2'
-                  onClick={handleToggleViewAllIdentities}
-                >
-                  Toggle View All Identities
-                </Button>
-                <Button
-                  disabled={loading}
-                  className='btn text-center w-100 mt-2'
-                  onClick={handleResetIdentities}
-                >
-                  Reset Identities
-                </Button>
-              </div>
-            ) : (
-              <div className='buttons-notJudge'>
-                <Button
-                  disabled={loading}
-                  className='btn text-center w-100 mt-2'
-                  onClick={handleViewIdentity}
-                >
-                  View my identity
-                </Button>
-                <Button
-                  disabled={loading}
-                  className='btn text-center w-100 mt-2'
-                  onClick={handleViewLeaderBoard}
-                >
-                  Leader Board
-                </Button>
-                <Button
-                  disabled={loading}
-                  className='btn text-center w-100 mt-2'
-                  onClick={handleViewRules}
-                >
-                  View Rules
-                </Button>
-              </div>
-            )}
+                        <h4>{seat.player.name}</h4>
+                        <p>{showAllIdentity ? seat.player.identity : null}</p>
+                        <Button
+                          disabled={loading}
+                          onClick={() => handleChangeSeat(seatNumber)}
+                          className='btn mt-auto'
+                          variant='info'
+                        >
+                          Sit
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                )
+              })}
+            </Row>
+          </Container>
+          {isJudge ? (
+            <div className='buttons-judge'>
+              <Button
+                disabled={loading}
+                className='btn text-center w-100 mt-2'
+                onClick={handleToggleViewAllIdentities}
+              >
+                Toggle View All Identities
+              </Button>
+              <Button
+                disabled={loading}
+                className='btn text-center w-100 mt-2'
+                onClick={handleResetIdentities}
+              >
+                Reset Identities
+              </Button>
+            </div>
+          ) : (
+            <div className='buttons-notJudge'>
+              <Button
+                disabled={loading}
+                className='btn text-center w-100 mt-2'
+                onClick={handleViewIdentity}
+              >
+                View my identity
+              </Button>
 
-            <Button
-              disabled={loading}
-              className='btn text-center w-100 mt-2'
-              onClick={handleLogout}
-            >
-              Log out
-            </Button>
+              <Button
+                disabled={loading}
+                className='btn text-center w-100 mt-2'
+                onClick={handleViewRules}
+              >
+                View Rules
+              </Button>
+            </div>
+          )}
 
-            <ShowIdentity
-              show={showIdentity}
-              onHide={handleCloseViewIdentity}
-              seat={currentSeat === 0 ? {} : seating[currentSeat - 1]}
-              loading={loading}
-              displayError={displayError}
-            />
+          <Button
+            disabled={loading}
+            className='btn text-center w-100 mt-2'
+            onClick={handleLogout}
+          >
+            Log out
+          </Button>
 
-            <LeaderBoard
-              show={showLeaderBoard}
-              onHide={handleCloseLeaderBoard}
-              leaderBoard={leaderBoard}
-            />
+          <ShowIdentity
+            show={showIdentity}
+            onHide={handleCloseViewIdentity}
+            seat={currentSeat === 0 ? {} : seating[currentSeat - 1]}
+            loading={loading}
+            displayError={displayError}
+          />
 
-            <Rules show={showRules} onHide={handleCloseRules} />
-          </div>
+          <LeaderBoard
+            show={showLeaderBoard}
+            onHide={handleCloseLeaderBoard}
+            leaderBoard={leaderBoard}
+          />
+
+          <Rules show={showRules} onHide={handleCloseRules} />
+        </div>
       )}
     </>
   )
