@@ -246,34 +246,30 @@ export default function MainRoom() {
                     <Nav.Item>
                       <Button
                         disabled={loading}
-                        className='btn text-center w-100 mt-2'
+                        className='btn text-center'
                         variant='dark'
                         onClick={handleViewRules}
                       >
                         View Rules
                       </Button>
                     </Nav.Item>
-                    <NavDropdown title='Dropdown' id='collasible-nav-dropdown'>
-                      <NavDropdown.Item href='#action/3.1'>
-                        Action
-                      </NavDropdown.Item>
-                      <NavDropdown.Item href='#action/3.2'>
-                        Another action
-                      </NavDropdown.Item>
-                      <NavDropdown.Item href='#action/3.3'>
-                        Something
-                      </NavDropdown.Item>
-                      <NavDropdown.Divider />
-                      <NavDropdown.Item href='#action/3.4'>
-                        Separated link
-                      </NavDropdown.Item>
-                    </NavDropdown>
                   </Nav>
                   <Nav>
-                    <Nav.Link href='#deets'>More deets</Nav.Link>
-                    <Nav.Link eventKey={2} href='#memes'>
-                      Dank memes
-                    </Nav.Link>
+                    <NavDropdown
+                      title={currentUser.displayName}
+                      id='collasible-nav-dropdown'
+                    >
+                      <NavDropdown.Item>
+                        <Button
+                          disabled={loading}
+                          className='btn text-center w-100'
+                          variant='dark'
+                          onClick={handleLogout}
+                        >
+                          Log out
+                        </Button>
+                      </NavDropdown.Item>
+                    </NavDropdown>
                   </Nav>
                 </Navbar.Collapse>
               </Container>
@@ -336,14 +332,6 @@ export default function MainRoom() {
               </Button>
             </div>
           )}
-
-          <Button
-            disabled={loading}
-            className='btn text-center w-100 mt-2'
-            onClick={handleLogout}
-          >
-            Log out
-          </Button>
 
           <ShowIdentity
             show={showIdentity}
