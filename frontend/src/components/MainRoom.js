@@ -243,7 +243,16 @@ export default function MainRoom() {
                         Leader Board
                       </Button>
                     </Nav.Item>
-                    <Nav.Link href='#pricing'>Pricing</Nav.Link>
+                    <Nav.Item>
+                      <Button
+                        disabled={loading}
+                        className='btn text-center w-100 mt-2'
+                        variant='dark'
+                        onClick={handleViewRules}
+                      >
+                        View Rules
+                      </Button>
+                    </Nav.Item>
                     <NavDropdown title='Dropdown' id='collasible-nav-dropdown'>
                       <NavDropdown.Item href='#action/3.1'>
                         Action
@@ -324,14 +333,6 @@ export default function MainRoom() {
                 onClick={handleViewIdentity}
               >
                 View my identity
-              </Button>
-
-              <Button
-                disabled={loading}
-                className='btn text-center w-100 mt-2'
-                onClick={handleViewRules}
-              >
-                View Rules
               </Button>
             </div>
           )}
