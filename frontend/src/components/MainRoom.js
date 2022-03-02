@@ -1,6 +1,16 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { Card, Button, Alert, Row, Col, Container } from 'react-bootstrap'
+import {
+  Card,
+  Button,
+  Alert,
+  Row,
+  Col,
+  Container,
+  Navbar,
+  Nav,
+  NavDropdown,
+} from 'react-bootstrap'
 import { useAuth, logout } from '../contexts/AuthContext'
 import ShowIdentity from './ShowIdentity'
 import LeaderBoard from './LeaderBoard'
@@ -216,6 +226,55 @@ export default function MainRoom() {
         <div className='MainRoom'>
           <Container className='h-100'>
             {error && <Alert variant='danger'>{error}</Alert>}
+
+            <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
+              <Container>
+                <Navbar.Brand>Werewolf</Navbar.Brand>
+                <Navbar.Toggle aria-controls='responsive-navbar-nav' />
+                <Navbar.Collapse id='responsive-navbar-nav'>
+                  <Nav className='me-auto'>
+                    <Nav.Item>
+                      <Button
+                        disabled={loading}
+                        className='btn text-center'
+                        variant='dark'
+                        onClick={handleViewLeaderBoard}
+                      >
+                        Leader Board
+                      </Button>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Button
+                        disabled={loading}
+                        className='btn text-center'
+                        variant='dark'
+                        onClick={handleViewRules}
+                      >
+                        View Rules
+                      </Button>
+                    </Nav.Item>
+                  </Nav>
+                  <Nav>
+                    <NavDropdown
+                      title={currentUser.displayName}
+                      id='collasible-nav-dropdown'
+                    >
+                      <NavDropdown.Item>
+                        <Button
+                          disabled={loading}
+                          className='btn text-center w-100'
+                          variant='dark'
+                          onClick={handleLogout}
+                        >
+                          Log out
+                        </Button>
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                  </Nav>
+                </Navbar.Collapse>
+              </Container>
+            </Navbar>
+
             <Row className='h-100 w-100 align-items-center'>
               {seating.map((seat) => {
                 let seatNumber = seat.id
@@ -271,30 +330,8 @@ export default function MainRoom() {
               >
                 View my identity
               </Button>
-              <Button
-                disabled={loading}
-                className='btn text-center w-100 mt-2'
-                onClick={handleViewLeaderBoard}
-              >
-                Leader Board
-              </Button>
-              <Button
-                disabled={loading}
-                className='btn text-center w-100 mt-2'
-                onClick={handleViewRules}
-              >
-                View Rules
-              </Button>
             </div>
           )}
-
-          <Button
-            disabled={loading}
-            className='btn text-center w-100 mt-2'
-            onClick={handleLogout}
-          >
-            Log out
-          </Button>
 
           <ShowIdentity
             show={showIdentity}
