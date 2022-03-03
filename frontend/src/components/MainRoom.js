@@ -218,6 +218,30 @@ export default function MainRoom() {
     setShowRules(false)
   }
 
+  async function handleCloseRoom() {
+    try {
+      const res = await fetch(
+        `http://localhost:4321/api/rooms/${id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-type': 'application/json',
+          },
+        }
+      )
+
+      const result = await res.json()
+
+      if (res.status === 404 || res.status === 400) {
+        displayError(`ERROR: ${result.result}`)
+      } else {
+        navigate(`/`, { replace: true })
+      }
+    } catch {
+      displayError(`ERROR! Please try again`)
+    }
+  }
+
   return (
     <>
       {loading ? (
@@ -319,6 +343,13 @@ export default function MainRoom() {
                 onClick={handleResetIdentities}
               >
                 Reset Identities
+              </Button>
+              <Button
+                disabled={loading}
+                className='btn text-center w-100 mt-2'
+                onClick={handleCloseRoom}
+              >
+                Close Room
               </Button>
             </div>
           ) : (
