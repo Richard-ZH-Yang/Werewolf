@@ -39,7 +39,6 @@ const CreateRoom = ({ displayError }) => {
         body: JSON.stringify(newRoom),
       })
       const data = await res.json()
-      console.log(data)
       if (res.status === 404 || res.status === 400) {
         displayError(`ERROR: ${data.result}`)
       } else {
