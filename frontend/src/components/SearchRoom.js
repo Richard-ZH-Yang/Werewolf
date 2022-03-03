@@ -48,7 +48,6 @@ export default function SearchRoom() {
 
   function handleCreateRoom() {
     setShowCreateRoom(!showCreateRoom)
-    console.log(showCreateRoom)
   }
 
   return (

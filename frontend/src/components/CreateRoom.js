@@ -38,12 +38,12 @@ const CreateRoom = ({ displayError }) => {
         },
         body: JSON.stringify(newRoom),
       })
-      const data = res.json()
-      console.log(data.result)
+      const data = await res.json()
+      console.log(data)
       if (res.status === 404 || res.status === 400) {
         displayError(`ERROR: ${data.result}`)
       } else {
-        navigate(`/mainroom/${data.url}`, { replace: true })
+        navigate(`/mainroom/${data.id}`, { replace: true })
       }
     } catch (e) {
       displayError('ERROR! Please try again')
