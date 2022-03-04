@@ -42,8 +42,13 @@ export default function MainRoom() {
   const getRoom = useCallback(async () => {
     const response = await fetch(url)
     const room = await response.json()
-    // TODO: maybe also change the url, set url as state, as room.id is the room number
 
+    if (response.status === 404 || response.status === 400) {
+      displayError(room.result)
+      setTimeout(() => {
+        navigate(`/`, { replace: true })
+      }, 2000)
+    }
     let seating = room.seats
 
     // sort the seat number in ascending order
@@ -218,14 +223,36 @@ export default function MainRoom() {
     setShowRules(false)
   }
 
+  async function handleCloseRoom() {
+    try {
+      const res = await fetch(`http://localhost:4321/api/rooms/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-type': 'application/json',
+        },
+      })
+
+      const result = await res.json()
+
+      if (res.status === 404 || res.status === 400) {
+        displayError(`ERROR: ${result.result}`)
+      } else {
+        navigate(`/`, { replace: true })
+      }
+    } catch {
+      displayError(`ERROR! Please try again`)
+    }
+  }
+
   return (
     <>
+    {error && <Alert variant='danger'>{error}</Alert>}
       {loading ? (
         <h1>loading ...</h1>
       ) : (
         <div className='MainRoom'>
           <Container className='h-100'>
-            {error && <Alert variant='danger'>{error}</Alert>}
+            
 
             <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
               <Container>
@@ -319,6 +346,13 @@ export default function MainRoom() {
                 onClick={handleResetIdentities}
               >
                 Reset Identities
+              </Button>
+              <Button
+                disabled={loading}
+                className='btn text-center w-100 mt-2'
+                onClick={handleCloseRoom}
+              >
+                Close Room
               </Button>
             </div>
           ) : (
